@@ -1,0 +1,443 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia">
+
+  <Styles.Resources>
+    <x:Double x:Key="TabItemHeaderFontSize">15</x:Double>
+    <SolidColorBrush x:Key="TabItemHeaderForegroundUnselected" Color="#A3ADC2" />
+    <SolidColorBrush x:Key="TabItemHeaderForegroundUnselectedPointerOver" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="TabItemHeaderForegroundSelected" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="TabItemHeaderForegroundSelectedPointerOver" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="TabItemHeaderSelectedPipeFill" Color="#3B82F6" />
+    <SolidColorBrush x:Key="TabItemHeaderBackgroundUnselectedPointerOver" Color="Transparent" />
+    <SolidColorBrush x:Key="TabItemHeaderBackgroundSelectedPointerOver" Color="Transparent" />
+  </Styles.Resources>
+
+  <Style Selector="Window, UserControl">
+    <Setter Property="FontFamily" Value="{StaticResource NovaFont}" />
+  </Style>
+  <Style Selector="TextBlock">
+    <Setter Property="Foreground" Value="{StaticResource NovaText}" />
+    <Setter Property="FontSize" Value="14" />
+  </Style>
+  <Style Selector="TextBlock.display">
+    <Setter Property="FontSize" Value="34" />
+    <Setter Property="FontWeight" Value="ExtraBold" />
+  </Style>
+  <Style Selector="TextBlock.h1">
+    <Setter Property="FontSize" Value="28" />
+    <Setter Property="FontWeight" Value="Bold" />
+  </Style>
+  <Style Selector="TextBlock.h2">
+    <Setter Property="FontSize" Value="20" />
+    <Setter Property="FontWeight" Value="Bold" />
+  </Style>
+  <Style Selector="TextBlock.h3">
+    <Setter Property="FontSize" Value="16" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+  </Style>
+  <Style Selector="TextBlock.sub">
+    <Setter Property="FontSize" Value="14" />
+    <Setter Property="Foreground" Value="{StaticResource NovaTextSecondary}" />
+    <Setter Property="TextWrapping" Value="Wrap" />
+  </Style>
+  <Style Selector="TextBlock.caption">
+    <Setter Property="FontSize" Value="12" />
+    <Setter Property="Foreground" Value="{StaticResource NovaTextSecondary}" />
+  </Style>
+  <Style Selector="TextBlock.muted">
+    <Setter Property="Foreground" Value="{StaticResource NovaTextMuted}" />
+  </Style>
+  <Style Selector="TextBlock.section">
+    <Setter Property="FontSize" Value="12" />
+    <Setter Property="FontWeight" Value="Bold" />
+    <Setter Property="LetterSpacing" Value="2" />
+    <Setter Property="Foreground" Value="{StaticResource NovaSectionLabel}" />
+    <Setter Property="Margin" Value="4,8,0,12" />
+  </Style>
+  <Style Selector="TextBlock.stat">
+    <Setter Property="FontSize" Value="24" />
+    <Setter Property="FontWeight" Value="Bold" />
+  </Style>
+  <Style Selector="TextBlock.path">
+    <Setter Property="FontSize" Value="12" />
+    <Setter Property="Foreground" Value="{StaticResource NovaTextMuted}" />
+    <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+  </Style>
+
+  <Style Selector="Border.card">
+    <Setter Property="Background" Value="{StaticResource NovaCard}" />
+    <Setter Property="BorderBrush" Value="{StaticResource NovaCardBorder}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="24" />
+    <Setter Property="Padding" Value="24" />
+  </Style>
+  <Style Selector="Border.row">
+    <Setter Property="Background" Value="{StaticResource NovaRow}" />
+    <Setter Property="CornerRadius" Value="16" />
+    <Setter Property="Padding" Value="16,14" />
+  </Style>
+  <Style Selector="Border.divider">
+    <Setter Property="Height" Value="1" />
+    <Setter Property="Background" Value="{StaticResource NovaDivider}" />
+  </Style>
+
+  <Style Selector="Border.tile">
+    <Setter Property="Width" Value="48" />
+    <Setter Property="Height" Value="48" />
+    <Setter Property="CornerRadius" Value="14" />
+    <Setter Property="Background" Value="{StaticResource NovaAccentSoft}" />
+  </Style>
+  <Style Selector="Border.tile.small">
+    <Setter Property="Width" Value="40" />
+    <Setter Property="Height" Value="40" />
+    <Setter Property="CornerRadius" Value="12" />
+  </Style>
+  <Style Selector="Border.tile > mi|MaterialIcon">
+    <Setter Property="Width" Value="24" />
+    <Setter Property="Height" Value="24" />
+    <Setter Property="Foreground" Value="{StaticResource NovaAccentText}" />
+  </Style>
+  <Style Selector="Border.tile.small > mi|MaterialIcon">
+    <Setter Property="Width" Value="20" />
+    <Setter Property="Height" Value="20" />
+  </Style>
+  <Style Selector="Border.tile.success"><Setter Property="Background" Value="{StaticResource NovaSuccessSoft}" /></Style>
+  <Style Selector="Border.tile.success > mi|MaterialIcon"><Setter Property="Foreground" Value="{StaticResource NovaSuccessText}" /></Style>
+  <Style Selector="Border.tile.warning"><Setter Property="Background" Value="{StaticResource NovaWarningSoft}" /></Style>
+  <Style Selector="Border.tile.warning > mi|MaterialIcon"><Setter Property="Foreground" Value="{StaticResource NovaWarningText}" /></Style>
+  <Style Selector="Border.tile.danger"><Setter Property="Background" Value="{StaticResource NovaDangerSoft}" /></Style>
+  <Style Selector="Border.tile.danger > mi|MaterialIcon"><Setter Property="Foreground" Value="{StaticResource NovaDangerText}" /></Style>
+  <Style Selector="Border.tile.purple"><Setter Property="Background" Value="{StaticResource NovaPurpleSoft}" /></Style>
+  <Style Selector="Border.tile.purple > mi|MaterialIcon"><Setter Property="Foreground" Value="#A78BFA" /></Style>
+  <Style Selector="Border.tile.cyan"><Setter Property="Background" Value="{StaticResource NovaCyanSoft}" /></Style>
+  <Style Selector="Border.tile.cyan > mi|MaterialIcon"><Setter Property="Foreground" Value="{StaticResource NovaCyan}" /></Style>
+  <Style Selector="Border.tile.neutral"><Setter Property="Background" Value="{StaticResource NovaNeutralSoft}" /></Style>
+  <Style Selector="Border.tile.neutral > mi|MaterialIcon"><Setter Property="Foreground" Value="#C8D0E0" /></Style>
+
+  <Style Selector="Border.pill">
+    <Setter Property="CornerRadius" Value="999" />
+    <Setter Property="Padding" Value="10,3" />
+    <Setter Property="Background" Value="{StaticResource NovaNeutralSoft}" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="HorizontalAlignment" Value="Left" />
+  </Style>
+  <Style Selector="Border.pill > TextBlock">
+    <Setter Property="FontSize" Value="12" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="#C8D0E0" />
+  </Style>
+  <Style Selector="Border.pill.success"><Setter Property="Background" Value="{StaticResource NovaSuccessSoft}" /></Style>
+  <Style Selector="Border.pill.success > TextBlock"><Setter Property="Foreground" Value="{StaticResource NovaSuccessText}" /></Style>
+  <Style Selector="Border.pill.warning"><Setter Property="Background" Value="{StaticResource NovaWarningSoft}" /></Style>
+  <Style Selector="Border.pill.warning > TextBlock"><Setter Property="Foreground" Value="{StaticResource NovaWarningText}" /></Style>
+  <Style Selector="Border.pill.danger"><Setter Property="Background" Value="{StaticResource NovaDangerSoft}" /></Style>
+  <Style Selector="Border.pill.danger > TextBlock"><Setter Property="Foreground" Value="{StaticResource NovaDangerText}" /></Style>
+  <Style Selector="Border.pill.accent"><Setter Property="Background" Value="{StaticResource NovaAccentSoft}" /></Style>
+  <Style Selector="Border.pill.accent > TextBlock"><Setter Property="Foreground" Value="{StaticResource NovaAccentText}" /></Style>
+
+  <Style Selector="TextBlock.success"><Setter Property="Foreground" Value="{StaticResource NovaSuccessText}" /></Style>
+  <Style Selector="TextBlock.warning"><Setter Property="Foreground" Value="{StaticResource NovaWarningText}" /></Style>
+  <Style Selector="TextBlock.danger"><Setter Property="Foreground" Value="{StaticResource NovaDangerText}" /></Style>
+
+  <Style Selector="Border.bar">
+    <Setter Property="Width" Value="4" />
+    <Setter Property="CornerRadius" Value="2" />
+    <Setter Property="Background" Value="{StaticResource NovaAccent}" />
+  </Style>
+  <Style Selector="Border.bar.success"><Setter Property="Background" Value="{StaticResource NovaSuccess}" /></Style>
+  <Style Selector="Border.bar.warning"><Setter Property="Background" Value="{StaticResource NovaWarning}" /></Style>
+  <Style Selector="Border.bar.danger"><Setter Property="Background" Value="{StaticResource NovaDanger}" /></Style>
+  <Style Selector="Border.bar.purple"><Setter Property="Background" Value="{StaticResource NovaPurple}" /></Style>
+  <Style Selector="Border.bar.cyan"><Setter Property="Background" Value="{StaticResource NovaCyan}" /></Style>
+
+  <Style Selector="Border.hero">
+    <Setter Property="Background" Value="#38050B22" />
+    <Setter Property="BorderBrush" Value="{StaticResource NovaCardBorder}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="28" />
+    <Setter Property="Padding" Value="36" />
+    <Setter Property="ClipToBounds" Value="False" />
+  </Style>
+
+  <Style Selector="Ellipse.dot">
+    <Setter Property="Width" Value="10" />
+    <Setter Property="Height" Value="10" />
+    <Setter Property="Fill" Value="#6E7A96" />
+  </Style>
+  <Style Selector="Ellipse.dot.success"><Setter Property="Fill" Value="{StaticResource NovaSuccess}" /></Style>
+  <Style Selector="Ellipse.dot.warning"><Setter Property="Fill" Value="{StaticResource NovaWarning}" /></Style>
+  <Style Selector="Ellipse.dot.danger"><Setter Property="Fill" Value="{StaticResource NovaDanger}" /></Style>
+  <Style Selector="Ellipse.dot.accent"><Setter Property="Fill" Value="{StaticResource NovaAccent}" /></Style>
+
+  <Style Selector="Border.orb">
+    <Setter Property="Width" Value="128" />
+    <Setter Property="Height" Value="128" />
+    <Setter Property="CornerRadius" Value="64" />
+    <Setter Property="Background" Value="{StaticResource NovaSuccessSoft}" />
+    <Setter Property="BoxShadow" Value="0 0 70 18 #5522C55E" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <BoxShadowsTransition Property="BoxShadow" Duration="0:0:0.4" />
+      </Transitions>
+    </Setter>
+  </Style>
+  <Style Selector="Border.orb > mi|MaterialIcon">
+    <Setter Property="Width" Value="64" />
+    <Setter Property="Height" Value="64" />
+    <Setter Property="Foreground" Value="{StaticResource NovaSuccessText}" />
+  </Style>
+  <Style Selector="Border.orb.warning">
+    <Setter Property="Background" Value="{StaticResource NovaWarningSoft}" />
+    <Setter Property="BoxShadow" Value="0 0 70 18 #55F5A524" />
+  </Style>
+  <Style Selector="Border.orb.warning > mi|MaterialIcon"><Setter Property="Foreground" Value="{StaticResource NovaWarningText}" /></Style>
+  <Style Selector="Border.orb.danger">
+    <Setter Property="Background" Value="{StaticResource NovaDangerSoft}" />
+    <Setter Property="BoxShadow" Value="0 0 70 18 #55EF4444" />
+  </Style>
+  <Style Selector="Border.orb.danger > mi|MaterialIcon"><Setter Property="Foreground" Value="{StaticResource NovaDangerText}" /></Style>
+  <Style Selector="Border.orb.accent">
+    <Setter Property="Background" Value="{StaticResource NovaAccentSoft}" />
+    <Setter Property="BoxShadow" Value="0 0 70 18 #553B82F6" />
+  </Style>
+  <Style Selector="Border.orb.accent > mi|MaterialIcon"><Setter Property="Foreground" Value="{StaticResource NovaAccentText}" /></Style>
+  <Style Selector="Border.orb.small">
+    <Setter Property="Width" Value="88" />
+    <Setter Property="Height" Value="88" />
+    <Setter Property="CornerRadius" Value="44" />
+  </Style>
+  <Style Selector="Border.orb.small > mi|MaterialIcon">
+    <Setter Property="Width" Value="44" />
+    <Setter Property="Height" Value="44" />
+  </Style>
+
+  <Style Selector="Button">
+    <Setter Property="CornerRadius" Value="14" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Padding" Value="20,11" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="Foreground" Value="White" />
+    <Setter Property="Background" Value="#12FFFFFF" />
+    <Setter Property="BorderBrush" Value="#1FFFFFFF" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="HorizontalContentAlignment" Value="Center" />
+  </Style>
+  <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#1EFFFFFF" />
+    <Setter Property="BorderBrush" Value="#33FFFFFF" />
+    <Setter Property="Foreground" Value="White" />
+  </Style>
+  <Style Selector="Button:pressed /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#0CFFFFFF" />
+    <Setter Property="Foreground" Value="White" />
+  </Style>
+  <Style Selector="Button:disabled /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Opacity" Value="0.45" />
+    <Setter Property="Foreground" Value="White" />
+  </Style>
+
+  <Style Selector="Button.primary">
+    <Setter Property="Background" Value="{StaticResource NovaAccent}" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Padding" Value="26,13" />
+    <Setter Property="FontSize" Value="15" />
+  </Style>
+  <Style Selector="Button.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{StaticResource NovaAccentHover}" />
+  </Style>
+  <Style Selector="Button.primary:pressed /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{StaticResource NovaAccentPressed}" />
+  </Style>
+  <Style Selector="Button.primary:disabled /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{StaticResource NovaAccent}" />
+  </Style>
+
+  <Style Selector="Button.cta">
+    <Setter Property="Background" Value="{StaticResource NovaOrange}" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Padding" Value="28,14" />
+    <Setter Property="FontSize" Value="15" />
+    <Setter Property="FontWeight" Value="Bold" />
+  </Style>
+  <Style Selector="Button.cta:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{StaticResource NovaOrangeHover}" />
+  </Style>
+  <Style Selector="Button.cta:pressed /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#E85A1F" />
+  </Style>
+
+  <Style Selector="Button.success">
+    <Setter Property="Background" Value="{StaticResource NovaSuccess}" />
+    <Setter Property="BorderThickness" Value="0" />
+  </Style>
+  <Style Selector="Button.success:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#2DD36B" />
+  </Style>
+
+  <Style Selector="Button.danger">
+    <Setter Property="Background" Value="{StaticResource NovaDangerSoft}" />
+    <Setter Property="BorderBrush" Value="#55EF4444" />
+    <Setter Property="Foreground" Value="{StaticResource NovaDangerText}" />
+  </Style>
+  <Style Selector="Button.danger:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#40EF4444" />
+    <Setter Property="BorderBrush" Value="#88EF4444" />
+    <Setter Property="Foreground" Value="#FECACA" />
+  </Style>
+
+  <Style Selector="Button.ghost">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Foreground" Value="{StaticResource NovaAccentText}" />
+    <Setter Property="Padding" Value="10,6" />
+  </Style>
+  <Style Selector="Button.ghost:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#14FFFFFF" />
+    <Setter Property="Foreground" Value="#93C5FD" />
+  </Style>
+
+  <Style Selector="Button.small">
+    <Setter Property="Padding" Value="14,7" />
+    <Setter Property="FontSize" Value="13" />
+    <Setter Property="CornerRadius" Value="11" />
+  </Style>
+
+  <Style Selector="Button.round">
+    <Setter Property="Width" Value="44" />
+    <Setter Property="Height" Value="44" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="CornerRadius" Value="22" />
+    <Setter Property="Background" Value="#14FFFFFF" />
+    <Setter Property="BorderBrush" Value="#26FFFFFF" />
+  </Style>
+
+  <Style Selector="Button.cardbutton">
+    <Setter Property="Background" Value="{StaticResource NovaCard}" />
+    <Setter Property="BorderBrush" Value="{StaticResource NovaCardBorder}" />
+    <Setter Property="CornerRadius" Value="24" />
+    <Setter Property="Padding" Value="22" />
+    <Setter Property="HorizontalAlignment" Value="Stretch" />
+    <Setter Property="VerticalAlignment" Value="Stretch" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+    <Setter Property="FontWeight" Value="Normal" />
+  </Style>
+  <Style Selector="Button.cardbutton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{StaticResource NovaCardHover}" />
+    <Setter Property="BorderBrush" Value="#403B82F6" />
+  </Style>
+
+  <Style Selector="TextBox">
+    <Setter Property="CornerRadius" Value="14" />
+    <Setter Property="Padding" Value="16,12" />
+    <Setter Property="FontSize" Value="15" />
+    <Setter Property="MinHeight" Value="48" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="CaretBrush" Value="White" />
+  </Style>
+  <Style Selector="TextBox.large">
+    <Setter Property="MinHeight" Value="56" />
+    <Setter Property="FontSize" Value="16" />
+    <Setter Property="Padding" Value="18,14" />
+  </Style>
+
+  <Style Selector="ToggleSwitch">
+    <Setter Property="OnContent" Value="{x:Null}" />
+    <Setter Property="OffContent" Value="{x:Null}" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="MinWidth" Value="0" />
+    <Setter Property="Cursor" Value="Hand" />
+  </Style>
+
+  <Style Selector="ProgressBar">
+    <Setter Property="Background" Value="#14FFFFFF" />
+    <Setter Property="Foreground" Value="{StaticResource NovaAccent}" />
+    <Setter Property="CornerRadius" Value="999" />
+    <Setter Property="MinHeight" Value="8" />
+  </Style>
+
+  <Style Selector="ProgressBar.success"><Setter Property="Foreground" Value="{StaticResource NovaSuccess}" /></Style>
+  <Style Selector="ProgressBar.warning"><Setter Property="Foreground" Value="{StaticResource NovaWarning}" /></Style>
+  <Style Selector="ProgressBar.danger"><Setter Property="Foreground" Value="{StaticResource NovaDanger}" /></Style>
+
+  <Style Selector="ListBox.nav">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Padding" Value="0" />
+  </Style>
+  <Style Selector="ListBox.nav ListBoxItem">
+    <Setter Property="Margin" Value="12,2" />
+    <Setter Property="Padding" Value="14,11" />
+    <Setter Property="CornerRadius" Value="14" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="Foreground" Value="{StaticResource NovaTextSecondary}" />
+  </Style>
+  <Style Selector="ListBox.nav ListBoxItem /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="CornerRadius" Value="14" />
+  </Style>
+  <Style Selector="ListBox.nav ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#0FFFFFFF" />
+  </Style>
+  <Style Selector="ListBox.nav ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{StaticResource NovaNavSelected}" />
+  </Style>
+  <Style Selector="ListBox.nav ListBoxItem:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{StaticResource NovaNavSelected}" />
+  </Style>
+  <Style Selector="ListBox.nav ListBoxItem:selected:focus /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{StaticResource NovaNavSelected}" />
+  </Style>
+  <Style Selector="ListBox.nav ListBoxItem TextBlock.navlabel">
+    <Setter Property="Foreground" Value="{StaticResource NovaTextSecondary}" />
+    <Setter Property="FontWeight" Value="Medium" />
+    <Setter Property="FontSize" Value="14" />
+  </Style>
+  <Style Selector="ListBox.nav ListBoxItem:selected TextBlock.navlabel">
+    <Setter Property="Foreground" Value="White" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+  </Style>
+  <Style Selector="ListBox.nav ListBoxItem mi|MaterialIcon.navicon">
+    <Setter Property="Foreground" Value="{StaticResource NovaTextSecondary}" />
+  </Style>
+  <Style Selector="ListBox.nav ListBoxItem:selected mi|MaterialIcon.navicon">
+    <Setter Property="Foreground" Value="{StaticResource NovaAccentText}" />
+  </Style>
+  <Style Selector="ListBox.nav ListBoxItem Border.navbar">
+    <Setter Property="Opacity" Value="0" />
+  </Style>
+  <Style Selector="ListBox.nav ListBoxItem:selected Border.navbar">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="ItemsControl.list > ContentPresenter">
+    <Setter Property="Margin" Value="0,0,0,10" />
+  </Style>
+
+  <Style Selector="Arc.spin">
+    <Style.Animations>
+      <Animation Duration="0:0:1.1" IterationCount="INFINITE">
+        <KeyFrame Cue="0%">
+          <Setter Property="RotateTransform.Angle" Value="0" />
+        </KeyFrame>
+        <KeyFrame Cue="100%">
+          <Setter Property="RotateTransform.Angle" Value="360" />
+        </KeyFrame>
+      </Animation>
+    </Style.Animations>
+  </Style>
+  <Style Selector="Border.pulse">
+    <Style.Animations>
+      <Animation Duration="0:0:2.4" IterationCount="INFINITE" PlaybackDirection="Alternate">
+        <KeyFrame Cue="0%">
+          <Setter Property="Opacity" Value="0.55" />
+        </KeyFrame>
+        <KeyFrame Cue="100%">
+          <Setter Property="Opacity" Value="1" />
+        </KeyFrame>
+      </Animation>
+    </Style.Animations>
+  </Style>
+</Styles>

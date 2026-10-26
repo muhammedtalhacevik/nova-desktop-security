@@ -1,0 +1,170 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Nova.Desktop.ViewModels"
+             xmlns:ui="using:Nova.Desktop.Controls"
+             xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             x:Class="Nova.Desktop.Views.Pages.BreachView"
+             x:DataType="vm:BreachViewModel">
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Margin="40,0,40,40" Spacing="24" MaxWidth="1240">
+
+      <StackPanel Spacing="2">
+        <TextBlock Classes="h1" Text="E-posta Veri İhlali Kontrolü" />
+        <TextBlock Classes="sub" Text="E-posta adresinizin bilinen veri ihlallerinde bulunup bulunmadığını sorgulayın" />
+      </StackPanel>
+
+      <Border Classes="card" Padding="26">
+        <StackPanel Spacing="14">
+          <Grid ColumnDefinitions="*,Auto">
+            <TextBox Classes="large" Text="{Binding Email}" Watermark="ornek@eposta.com">
+              <TextBox.InnerLeftContent>
+                <mi:MaterialIcon Kind="EmailOutline" Width="22" Height="22" Margin="16,0,0,0" Foreground="{StaticResource NovaTextMuted}" />
+              </TextBox.InnerLeftContent>
+              <TextBox.KeyBindings>
+                <KeyBinding Gesture="Enter" Command="{Binding CheckCommand}" />
+              </TextBox.KeyBindings>
+            </TextBox>
+            <Button AutomationProperties.Name="Kontrol et" Grid.Column="1" Classes="primary" Margin="12,0,0,0" Height="56" Padding="32,0" Command="{Binding CheckCommand}">
+              <Panel>
+                <StackPanel Orientation="Horizontal" Spacing="10" IsVisible="{Binding !IsChecking}">
+                  <mi:MaterialIcon Kind="Magnify" Width="20" Height="20" />
+                  <TextBlock Text="İhlalleri Sorgula" FontWeight="Bold" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="10" IsVisible="{Binding IsChecking}">
+                  <Arc Classes="spin" Width="18" Height="18" StartAngle="0" SweepAngle="270" Stroke="White" StrokeThickness="2.5" RenderTransform="rotate(0deg)" />
+                  <TextBlock Text="Sorgulanıyor…" FontWeight="Bold" />
+                </StackPanel>
+              </Panel>
+            </Button>
+          </Grid>
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <mi:MaterialIcon Kind="LockOutline" Width="16" Height="16" Foreground="{StaticResource NovaTextMuted}" />
+            <TextBlock Classes="caption" Text="{Binding ProviderText}" TextWrapping="Wrap" MaxWidth="1000" />
+          </StackPanel>
+          <Border Classes="row" Background="{StaticResource NovaDangerSoft}" IsVisible="{Binding HasError}">
+            <StackPanel Orientation="Horizontal" Spacing="10">
+              <mi:MaterialIcon Kind="AlertCircleOutline" Width="18" Height="18" Foreground="{StaticResource NovaDangerText}" />
+              <TextBlock Text="{Binding Error}" Foreground="{StaticResource NovaDangerText}" TextWrapping="Wrap" />
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </Border>
+
+      <StackPanel Spacing="24" IsVisible="{Binding HasResult}">
+        <Border Classes="hero">
+          <Grid ColumnDefinitions="Auto,*">
+            <Border Classes="orb" ui:Tone.Class="{Binding ResultTone}" Margin="4,0,36,0" VerticalAlignment="Center">
+              <mi:MaterialIcon Kind="{Binding ResultIcon}" />
+            </Border>
+            <StackPanel Grid.Column="1" Spacing="8" VerticalAlignment="Center">
+              <TextBlock Classes="display" Text="{Binding ResultHeadline}" />
+              <TextBlock Classes="sub" FontSize="15" Text="{Binding ResultSub}" />
+            </StackPanel>
+          </Grid>
+        </Border>
+
+        <Border Classes="card" IsVisible="{Binding Found}">
+          <StackPanel Spacing="12">
+            <TextBlock Classes="h2" Text="Ne yapmalısınız?" />
+            <StackPanel Spacing="10">
+              <StackPanel Orientation="Horizontal" Spacing="12">
+                <Border Classes="tile small warning"><mi:MaterialIcon Kind="KeyChange" /></Border>
+                <TextBlock Classes="sub" VerticalAlignment="Center" Text="Etkilenen hesapların ve aynı parolayı kullandığınız tüm hesapların parolasını değiştirin." />
+              </StackPanel>
+              <StackPanel Orientation="Horizontal" Spacing="12">
+                <Border Classes="tile small success"><mi:MaterialIcon Kind="CellphoneKey" /></Border>
+                <TextBlock Classes="sub" VerticalAlignment="Center" Text="İki adımlı doğrulamayı (2FA) açın." />
+              </StackPanel>
+              <StackPanel Orientation="Horizontal" Spacing="12">
+                <Border Classes="tile small"><mi:MaterialIcon Kind="EmailAlertOutline" /></Border>
+                <TextBlock Classes="sub" VerticalAlignment="Center" Text="Sizden parola veya kod isteyen e-posta ve SMS'lere karşı dikkatli olun; oltalama artabilir." />
+              </StackPanel>
+            </StackPanel>
+          </StackPanel>
+        </Border>
+
+        <ItemsControl ItemsSource="{Binding Breaches}" IsVisible="{Binding Found}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate><UniformGrid Columns="2" /></ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="vm:BreachItemViewModel">
+              <Border Classes="card" Margin="0,0,16,16" Padding="22">
+                <StackPanel Spacing="10">
+                  <Grid ColumnDefinitions="Auto,*,Auto">
+                    <Border Classes="tile danger">
+                      <TextBlock Text="{Binding Initial}" FontSize="20" FontWeight="Bold" Foreground="{StaticResource NovaDangerText}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <StackPanel Grid.Column="1" Margin="14,0" VerticalAlignment="Center">
+                      <TextBlock Classes="h3" Text="{Binding Name}" TextTrimming="CharacterEllipsis" />
+                      <TextBlock Classes="caption" Text="{Binding Domain}" IsVisible="{Binding HasDomain}" />
+                    </StackPanel>
+                    <Border Grid.Column="2" Classes="pill success" IsVisible="{Binding Verified}" VerticalAlignment="Top">
+                      <TextBlock Text="Doğrulanmış" />
+                    </Border>
+                  </Grid>
+                  <StackPanel Orientation="Horizontal" Spacing="16">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                      <mi:MaterialIcon Kind="CalendarOutline" Width="16" Height="16" Foreground="{StaticResource NovaTextMuted}" />
+                      <TextBlock Classes="caption" Text="{Binding DateText}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Spacing="6" IsVisible="{Binding HasRecords}">
+                      <mi:MaterialIcon Kind="AccountGroupOutline" Width="16" Height="16" Foreground="{StaticResource NovaTextMuted}" />
+                      <TextBlock Classes="caption" Text="{Binding RecordsText}" />
+                    </StackPanel>
+                    <Border Classes="pill danger" IsVisible="{Binding ExposesPassword}">
+                      <TextBlock Text="Parola sızdı" />
+                    </Border>
+                  </StackPanel>
+                  <ItemsControl ItemsSource="{Binding DataClasses}" IsVisible="{Binding HasDataClasses}">
+                    <ItemsControl.ItemsPanel>
+                      <ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate x:DataType="x:String">
+                        <Border Classes="pill" Margin="0,0,6,6"><TextBlock Text="{Binding}" /></Border>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                  <TextBlock Classes="caption" Text="{Binding Description}" TextWrapping="Wrap" IsVisible="{Binding HasDescription}" />
+                </StackPanel>
+              </Border>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </StackPanel>
+
+      <Border Classes="card" Padding="26">
+        <StackPanel Spacing="14">
+          <Grid ColumnDefinitions="Auto,*">
+            <Border Classes="tile purple"><mi:MaterialIcon Kind="FormTextboxPassword" /></Border>
+            <StackPanel Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Center">
+              <TextBlock Classes="h3" Text="Parola Sızıntı Kontrolü" />
+              <TextBlock Classes="caption" TextWrapping="Wrap"
+                         Text="Parolanız cihazdan çıkmaz: yalnızca SHA-1 özetinin ilk 5 karakteri Pwned Passwords servisine gönderilir (k-anonimlik)." />
+            </StackPanel>
+          </Grid>
+          <Grid ColumnDefinitions="*,Auto">
+            <TextBox Text="{Binding Password}" PasswordChar="•" RevealPassword="False" Watermark="Kontrol edilecek parola" Classes="revealPasswordButton">
+              <TextBox.KeyBindings>
+                <KeyBinding Gesture="Enter" Command="{Binding CheckPasswordCommand}" />
+              </TextBox.KeyBindings>
+            </TextBox>
+            <Button AutomationProperties.Name="Parolayı kontrol et" Grid.Column="1" Margin="12,0,0,0" Height="48" Padding="24,0" Command="{Binding CheckPasswordCommand}">
+              <Panel>
+                <TextBlock Text="Parolayı Kontrol Et" IsVisible="{Binding !IsCheckingPassword}" />
+                <TextBlock Text="Kontrol ediliyor…" IsVisible="{Binding IsCheckingPassword}" />
+              </Panel>
+            </Button>
+          </Grid>
+          <Border Classes="row" IsVisible="{Binding HasPasswordResult}">
+            <StackPanel Orientation="Horizontal" Spacing="10">
+              <Ellipse Classes="dot" ui:Tone.Class="{Binding PasswordTone}" VerticalAlignment="Center" />
+              <TextBlock Text="{Binding PasswordResult}" TextWrapping="Wrap" MaxWidth="1000" />
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

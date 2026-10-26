@@ -1,0 +1,13 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <Version>1.2.2</Version>
+    <Company>Pera Soft</Company>
+    <Product>Nova Desktop Security</Product>
+    <Copyright>Â© 2026 Pera Soft</Copyright>
+  </PropertyGroup>
+</Project>
+

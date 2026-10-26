@@ -1,0 +1,159 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Nova.Desktop.ViewModels"
+             xmlns:ui="using:Nova.Desktop.Controls"
+             xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             x:Class="Nova.Desktop.Views.Pages.SecurityCenterView"
+             x:DataType="vm:SecurityCenterViewModel">
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Margin="40,0,40,40" Spacing="22" MaxWidth="1240">
+
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel Spacing="2">
+          <TextBlock Classes="h1" Text="Güvenlik Merkezi" />
+          <TextBlock Classes="sub" Text="Koruma durumu, riskler, bildirimler, tarama geçmişi ve karantina kayıtları" />
+        </StackPanel>
+        <Border Grid.Column="1" Classes="pill" ui:Tone.Class="{Binding StatusTone}" VerticalAlignment="Center" Padding="14,6">
+          <TextBlock Text="{Binding Headline}" FontSize="13" />
+        </Border>
+      </Grid>
+
+      <ItemsControl ItemsSource="{Binding Components}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate><UniformGrid Columns="3" /></ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="vm:ComponentStatus">
+            <Border Classes="card" Padding="18" Margin="0,0,14,14">
+              <Grid ColumnDefinitions="Auto,*,Auto">
+                <Border Classes="tile" ui:Tone.Class="{Binding Tone}"><mi:MaterialIcon Kind="{Binding Icon}" /></Border>
+                <StackPanel Grid.Column="1" Margin="14,0" VerticalAlignment="Center">
+                  <TextBlock Text="{Binding Title}" FontWeight="SemiBold" />
+                  <TextBlock Classes="caption" Text="{Binding Value}" TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+                <Ellipse Grid.Column="2" Classes="dot" ui:Tone.Class="{Binding Tone}" VerticalAlignment="Center" />
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+
+      <Border Classes="card" IsVisible="{Binding HasIssues}">
+        <StackPanel Spacing="14">
+          <TextBlock Classes="h2" Text="Açık Riskler ve Öneriler" />
+          <ItemsControl ItemsSource="{Binding Issues}" />
+        </StackPanel>
+      </Border>
+
+      <Border Classes="card" IsVisible="{Binding HasPendingThreats}" BorderBrush="#55EF4444">
+        <StackPanel Spacing="14">
+          <Grid ColumnDefinitions="*,Auto">
+            <StackPanel>
+              <TextBlock Classes="h2" Text="İşlem Bekleyen Tehditler" />
+              <TextBlock Classes="caption" Text="Bu dosyalar hâlâ diskinizde bulunuyor." />
+            </StackPanel>
+            <Button Grid.Column="1" Classes="cta" Content="Tümünü Karantinaya Al" Command="{Binding QuarantineAllPendingCommand}" VerticalAlignment="Center" />
+          </Grid>
+          <ItemsControl ItemsSource="{Binding PendingThreats}" />
+        </StackPanel>
+      </Border>
+
+      <TabControl SelectedIndex="{Binding SelectedTab}" Padding="0,16,0,0">
+        <TabItem Header="{Binding EventsHeader}">
+          <Border Classes="card">
+            <StackPanel Spacing="16">
+              <Grid ColumnDefinitions="*,Auto,Auto">
+                <TextBlock Classes="h2" Text="Bildirimler" />
+                <Button Grid.Column="1" Classes="small ghost" Content="Tümünü okundu say" Command="{Binding MarkAllReadCommand}" />
+                <Button Grid.Column="2" Classes="small ghost" Content="Temizle" Command="{Binding ClearEventsCommand}" />
+              </Grid>
+              <ItemsControl ItemsSource="{Binding Events}" IsVisible="{Binding HasEvents}" />
+              <TextBlock Classes="sub" Text="Bildirim yok." IsVisible="{Binding !HasEvents}" />
+            </StackPanel>
+          </Border>
+        </TabItem>
+
+        <TabItem Header="{Binding HistoryHeader}">
+          <Border Classes="card">
+            <StackPanel Spacing="16">
+              <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Classes="h2" Text="Tarama Geçmişi ve Raporlar" />
+                <Button Grid.Column="1" Classes="small ghost" Content="Geçmişi temizle" Command="{Binding ClearHistoryCommand}" />
+              </Grid>
+              <TextBlock Classes="sub" Text="Henüz tarama yapılmadı." IsVisible="{Binding !HasSessions}" />
+              <ItemsControl ItemsSource="{Binding Sessions}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate x:DataType="vm:SessionItemViewModel">
+                    <Border Classes="row" Margin="0,0,0,8">
+                      <Grid ColumnDefinitions="Auto,2*,*,*,*,Auto,Auto">
+                        <Border Classes="tile small"><mi:MaterialIcon Kind="{Binding Icon}" /></Border>
+                        <StackPanel Grid.Column="1" Margin="14,0" VerticalAlignment="Center">
+                          <TextBlock Text="{Binding TypeText}" FontWeight="SemiBold" />
+                          <TextBlock Classes="caption" Text="{Binding DateText}" />
+                        </StackPanel>
+                        <TextBlock Grid.Column="2" Classes="caption" Text="{Binding FilesText}" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="3" Classes="caption" Text="{Binding DurationText}" VerticalAlignment="Center" />
+                        <Border Grid.Column="4" Classes="pill" ui:Tone.Class="{Binding ThreatsTone}"><TextBlock Text="{Binding ThreatsText}" /></Border>
+                        <Button AutomationProperties.Name="Rapor" Grid.Column="5" Classes="small" Margin="8,0" Command="{Binding ExportCommand}">
+                          <StackPanel Orientation="Horizontal" Spacing="6">
+                            <mi:MaterialIcon Kind="FileDocumentOutline" Width="16" Height="16" />
+                            <TextBlock Text="Rapor" />
+                          </StackPanel>
+                        </Button>
+                        <Button AutomationProperties.Name="Kaydı sil" Grid.Column="6" Classes="small ghost" Command="{Binding DeleteCommand}" ToolTip.Tip="Kaydı sil">
+                          <mi:MaterialIcon Kind="DeleteOutline" Width="18" Height="18" />
+                        </Button>
+                      </Grid>
+                    </Border>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </StackPanel>
+          </Border>
+        </TabItem>
+
+        <TabItem Header="{Binding QuarantineHeader}">
+          <Border Classes="card">
+            <StackPanel Spacing="16">
+              <Grid ColumnDefinitions="*,Auto">
+                <StackPanel>
+                  <TextBlock Classes="h2" Text="Karantina" />
+                  <TextBlock Classes="caption" Text="Karantinadaki dosyalar şifrelenmiş olarak yalıtılır ve çalıştırılamaz." />
+                </StackPanel>
+                <Button Grid.Column="1" Classes="small danger" Content="Karantinayı boşalt" Command="{Binding DeleteAllQuarantineCommand}" IsVisible="{Binding HasQuarantine}" VerticalAlignment="Center" />
+              </Grid>
+              <StackPanel Orientation="Horizontal" Spacing="10" IsVisible="{Binding !HasQuarantine}">
+                <mi:MaterialIcon Kind="ArchiveCheckOutline" Width="20" Height="20" Foreground="{StaticResource NovaSuccessText}" />
+                <TextBlock Classes="sub" Text="Karantina boş." />
+              </StackPanel>
+              <ItemsControl ItemsSource="{Binding QuarantineItems}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate x:DataType="vm:QuarantineItemViewModel">
+                    <Border Classes="row" Margin="0,0,0,8">
+                      <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                        <Border Classes="tile small" ui:Tone.Class="{Binding SeverityTone}"><mi:MaterialIcon Kind="ArchiveLockOutline" /></Border>
+                        <StackPanel Grid.Column="1" Margin="14,0" Spacing="1">
+                          <StackPanel Orientation="Horizontal" Spacing="8">
+                            <TextBlock Text="{Binding FileName}" FontWeight="SemiBold" />
+                            <Border Classes="pill" ui:Tone.Class="{Binding SeverityTone}"><TextBlock Text="{Binding ThreatName}" /></Border>
+                          </StackPanel>
+                          <TextBlock Classes="path" Text="{Binding OriginalPath}" ToolTip.Tip="{Binding OriginalPath}" />
+                          <TextBlock Classes="caption muted" Text="{Binding DateText}" />
+                        </StackPanel>
+                        <TextBlock Grid.Column="2" Classes="caption" Text="{Binding SizeText}" VerticalAlignment="Center" Margin="0,0,14,0" />
+                        <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                          <Button Classes="small" Content="Geri yükle" Command="{Binding RestoreCommand}" />
+                          <Button Classes="small danger" Content="Sil" Command="{Binding DeleteCommand}" />
+                        </StackPanel>
+                      </Grid>
+                    </Border>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </StackPanel>
+          </Border>
+        </TabItem>
+      </TabControl>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

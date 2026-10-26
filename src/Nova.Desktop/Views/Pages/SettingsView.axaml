@@ -1,0 +1,306 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Nova.Desktop.ViewModels"
+             xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             x:Class="Nova.Desktop.Views.Pages.SettingsView"
+             x:DataType="vm:SettingsViewModel">
+  <UserControl.Styles>
+    <Style Selector="Grid.setting">
+      <Setter Property="Margin" Value="18,14" />
+    </Style>
+    <Style Selector="Border.divider">
+      <Setter Property="Margin" Value="84,0,18,0" />
+    </Style>
+  </UserControl.Styles>
+
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Margin="40,0,40,40" Spacing="8" MaxWidth="900">
+
+      <TextBlock Classes="h1" Text="Ayarlar" Margin="0,0,0,16" />
+
+      <Border Classes="card" Padding="26" Margin="0,0,0,14">
+        <Grid ColumnDefinitions="Auto,*,Auto">
+          <Border Width="84" Height="84" CornerRadius="42" Background="{StaticResource NovaAvatarGradient}" BoxShadow="0 0 40 4 #553B82F6">
+            <mi:MaterialIcon Kind="AccountOutline" Width="38" Height="38" Foreground="White" />
+          </Border>
+          <StackPanel Grid.Column="1" Margin="24,0" VerticalAlignment="Center" Spacing="6">
+            <TextBlock Classes="h2" Text="Nova Kullanıcısı" />
+            <Border Classes="pill accent" BorderBrush="#663B82F6" BorderThickness="1" Padding="12,5">
+              <StackPanel Orientation="Horizontal" Spacing="6">
+                <mi:MaterialIcon Kind="LightningBolt" Width="14" Height="14" Foreground="{StaticResource NovaWarningText}" />
+                <TextBlock Text="{Binding VersionText}" />
+              </StackPanel>
+            </Border>
+          </StackPanel>
+          <Button AutomationProperties.Name="Kullanıcı kimliğini kopyala" Grid.Column="2" Classes="small ghost" VerticalAlignment="Center" Command="{Binding CopyUserIdCommand}">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+              <TextBlock Text="{Binding UserId}" Foreground="{StaticResource NovaTextSecondary}" />
+              <mi:MaterialIcon Kind="ContentCopy" Width="16" Height="16" />
+            </StackPanel>
+          </Button>
+        </Grid>
+      </Border>
+
+      <TextBlock Classes="section" Text="GENEL" />
+      <Border Classes="card" Padding="0" Margin="0,0,0,14">
+        <StackPanel>
+          <Grid Classes="setting" ColumnDefinitions="Auto,*,Auto">
+            <Border Classes="tile warning"><mi:MaterialIcon Kind="BellRingOutline" /></Border>
+            <StackPanel Grid.Column="1" Margin="18,0" VerticalAlignment="Center">
+              <TextBlock Classes="h3" Text="Bildirimler" />
+              <TextBlock Classes="caption" Text="Tarama sonuçları ve uyarılar için anlık bildirim göster" />
+            </StackPanel>
+            <ToggleSwitch Grid.Column="2" IsChecked="{Binding NotificationsEnabled}" />
+          </Grid>
+          <Border Classes="divider" />
+          <Grid Classes="setting" ColumnDefinitions="Auto,*,Auto">
+            <Border Classes="tile"><mi:MaterialIcon Kind="RocketLaunchOutline" /></Border>
+            <StackPanel Grid.Column="1" Margin="18,0" VerticalAlignment="Center">
+              <TextBlock Classes="h3" Text="Sistemle birlikte başlat" />
+              <TextBlock Classes="caption" Text="Oturum açıldığında Nova simge durumunda çalışmaya başlasın" />
+            </StackPanel>
+            <ToggleSwitch Grid.Column="2" IsChecked="{Binding StartWithSystem}" />
+          </Grid>
+          <Border Classes="divider" />
+          <Grid Classes="setting" ColumnDefinitions="Auto,*,Auto">
+            <Border Classes="tile neutral"><mi:MaterialIcon Kind="TrayArrowDown" /></Border>
+            <StackPanel Grid.Column="1" Margin="18,0" VerticalAlignment="Center">
+              <TextBlock Classes="h3" Text="Kapatınca arka planda çalış" />
+              <TextBlock Classes="caption" Text="Pencere kapatıldığında Nova sistem tepsisinde korumaya devam eder" />
+            </StackPanel>
+            <ToggleSwitch Grid.Column="2" IsChecked="{Binding MinimizeToTray}" />
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <TextBlock Classes="section" Text="KORUMA" />
+      <Border Classes="card" Padding="0" Margin="0,0,0,14">
+        <StackPanel>
+          <Grid Classes="setting" ColumnDefinitions="Auto,*,Auto">
+            <Border Classes="tile success"><mi:MaterialIcon Kind="ShieldCheck" /></Border>
+            <StackPanel Grid.Column="1" Margin="18,0" VerticalAlignment="Center">
+              <TextBlock Classes="h3" Text="Gerçek Zamanlı Koruma" />
+              <TextBlock Classes="caption" Text="Aktif — indirilen ve değişen dosyalar arka planda izlenir" />
+            </StackPanel>
+            <ToggleSwitch Grid.Column="2" IsChecked="{Binding RealTimeProtection}" />
+          </Grid>
+          <Border Classes="divider" />
+          <Grid Classes="setting" ColumnDefinitions="Auto,*,Auto">
+            <Border Classes="tile danger"><mi:MaterialIcon Kind="ArchiveLockOutline" /></Border>
+            <StackPanel Grid.Column="1" Margin="18,0" VerticalAlignment="Center">
+              <TextBlock Classes="h3" Text="Otomatik karantina" />
+              <TextBlock Classes="caption" Text="Yüksek riskli tehditleri sormadan karantinaya al" />
+            </StackPanel>
+            <ToggleSwitch Grid.Column="2" IsChecked="{Binding AutoQuarantine}" />
+          </Grid>
+          <Border Classes="divider" IsVisible="{Binding IsWindows}" />
+          <Grid Classes="setting" ColumnDefinitions="Auto,*,Auto" IsVisible="{Binding IsWindows}">
+            <Border Classes="tile"><mi:MaterialIcon Kind="MicrosoftWindows" /></Border>
+            <StackPanel Grid.Column="1" Margin="18,0" VerticalAlignment="Center">
+              <TextBlock Classes="h3" Text="Sistem antivirüs motorunu kullan (AMSI)" />
+              <TextBlock Classes="caption" Text="Riskli dosyaları Microsoft Defender motoruyla da kontrol et" />
+            </StackPanel>
+            <ToggleSwitch Grid.Column="2" IsChecked="{Binding UseAmsi}" />
+          </Grid>
+          <Border Classes="divider" />
+          <Grid Classes="setting" ColumnDefinitions="Auto,*,Auto">
+            <Border Classes="tile purple"><mi:MaterialIcon Kind="Memory" /></Border>
+            <StackPanel Grid.Column="1" Margin="18,0" VerticalAlignment="Center">
+              <TextBlock Classes="h3" Text="Çalışan işlemleri tara" />
+              <TextBlock Classes="caption" Text="Hızlı ve tam taramada bellekte çalışan programların dosyalarını da tara" />
+            </StackPanel>
+            <ToggleSwitch Grid.Column="2" IsChecked="{Binding ScanRunningProcesses}" />
+          </Grid>
+          <Border Classes="divider" />
+          <Grid Classes="setting" ColumnDefinitions="Auto,*,Auto">
+            <Border Classes="tile cyan"><mi:MaterialIcon Kind="RocketLaunchOutline" /></Border>
+            <StackPanel Grid.Column="1" Margin="18,0" VerticalAlignment="Center">
+              <TextBlock Classes="h3" Text="Başlangıç değişikliklerini izle" />
+              <TextBlock Classes="caption" Text="Yeni bir program otomatik başlatmaya eklendiğinde uyar ve tara" />
+            </StackPanel>
+            <ToggleSwitch Grid.Column="2" IsChecked="{Binding MonitorStartupChanges}" />
+          </Grid>
+          <Border Classes="divider" />
+          <Grid Classes="setting" ColumnDefinitions="Auto,*,Auto">
+            <Border Classes="tile cyan"><mi:MaterialIcon Kind="Web" /></Border>
+            <StackPanel Grid.Column="1" Margin="18,0" VerticalAlignment="Center">
+              <TextBlock Classes="h3" Text="URL kontrolünde siteye bağlan" />
+              <TextBlock Classes="caption" Text="Sertifika ve yönlendirmeleri incelemek için siteye içerik indirmeden bağlan" />
+            </StackPanel>
+            <ToggleSwitch Grid.Column="2" IsChecked="{Binding ConnectToSite}" />
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <TextBlock Classes="section" Text="OTOMATİK TARAMA" />
+      <Border Classes="card" Padding="0" Margin="0,0,0,14">
+        <StackPanel>
+          <Grid Classes="setting" ColumnDefinitions="Auto,*,Auto">
+            <Border Classes="tile"><mi:MaterialIcon Kind="CalendarClock" /></Border>
+            <StackPanel Grid.Column="1" Margin="18,0" VerticalAlignment="Center">
+              <TextBlock Classes="h3" Text="Zamanlanmış tarama" />
+              <TextBlock Classes="caption" Text="{Binding NextRunText}" />
+            </StackPanel>
+            <ToggleSwitch Grid.Column="2" IsChecked="{Binding ScheduleEnabled}" />
+          </Grid>
+          <StackPanel IsVisible="{Binding ScheduleEnabled}">
+            <Border Classes="divider" />
+            <Grid Classes="setting" ColumnDefinitions="*,Auto,Auto,Auto,Auto">
+              <StackPanel VerticalAlignment="Center" Margin="66,0,0,0">
+                <TextBlock Classes="h3" Text="Sıklık, gün ve saat" />
+                <TextBlock Classes="caption" Text="Bilgisayar o saatte kapalıysa açılışta yapılır" />
+              </StackPanel>
+              <ComboBox Grid.Column="1" SelectedIndex="{Binding ScheduleFrequencyIndex}" Width="130" Margin="0,0,10,0" AutomationProperties.Name="Tarama sıklığı">
+                <ComboBoxItem Content="Her gün" />
+                <ComboBoxItem Content="Her hafta" />
+              </ComboBox>
+              <ComboBox Grid.Column="2" SelectedIndex="{Binding ScheduleDayIndex}" Width="130" Margin="0,0,10,0" IsVisible="{Binding IsWeekly}" AutomationProperties.Name="Tarama günü">
+                <ComboBoxItem Content="Pazartesi" />
+                <ComboBoxItem Content="Salı" />
+                <ComboBoxItem Content="Çarşamba" />
+                <ComboBoxItem Content="Perşembe" />
+                <ComboBoxItem Content="Cuma" />
+                <ComboBoxItem Content="Cumartesi" />
+                <ComboBoxItem Content="Pazar" />
+              </ComboBox>
+              <TimePicker Grid.Column="3" SelectedTime="{Binding ScheduleTime}" ClockIdentifier="24HourClock" MinuteIncrement="5" Margin="0,0,10,0" />
+              <ComboBox Grid.Column="4" SelectedIndex="{Binding ScheduleTypeIndex}" Width="140" AutomationProperties.Name="Tarama türü">
+                <ComboBoxItem Content="Hızlı tarama" />
+                <ComboBoxItem Content="Tam tarama" />
+              </ComboBox>
+            </Grid>
+          </StackPanel>
+          <Border Classes="divider" />
+          <Grid Classes="setting" ColumnDefinitions="Auto,*,Auto">
+            <Border Classes="tile cyan"><mi:MaterialIcon Kind="UsbFlashDrive" /></Border>
+            <StackPanel Grid.Column="1" Margin="18,0" VerticalAlignment="Center">
+              <TextBlock Classes="h3" Text="Takılan sürücüleri otomatik tara" />
+              <TextBlock Classes="caption" Text="USB bellek, harici disk veya SD kart takıldığında içeriği taranır" />
+            </StackPanel>
+            <ToggleSwitch Grid.Column="2" IsChecked="{Binding UsbAutoScan}" />
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <TextBlock Classes="section" Text="TARAMA" />
+      <Border Classes="card" Padding="0" Margin="0,0,0,14">
+        <StackPanel>
+          <Grid Classes="setting" ColumnDefinitions="Auto,*,Auto">
+            <Border Classes="tile neutral"><mi:MaterialIcon Kind="FileCogOutline" /></Border>
+            <StackPanel Grid.Column="1" Margin="18,0" VerticalAlignment="Center">
+              <TextBlock Classes="h3" Text="Özeti alınacak en büyük dosya" />
+              <TextBlock Classes="caption" Text="Daha büyük dosyalar yalnızca içerik ve ad analizinden geçer (MB)" />
+            </StackPanel>
+            <NumericUpDown Grid.Column="2" Value="{Binding MaxFileSizeMb}" Minimum="1" Maximum="4096" Increment="50" Width="150" FormatString="0" />
+          </Grid>
+          <Border Classes="divider" />
+          <StackPanel Margin="18,14" Spacing="10">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+              <Border Classes="tile neutral"><mi:MaterialIcon Kind="FolderCancelOutline" /></Border>
+              <StackPanel Grid.Column="1" Margin="18,0" VerticalAlignment="Center">
+                <TextBlock Classes="h3" Text="Hariç tutulan klasörler" />
+                <TextBlock Classes="caption" Text="Bu konumlar taranmaz ve izlenmez" />
+              </StackPanel>
+              <Button Grid.Column="2" Classes="small" Content="Klasör ekle" Command="{Binding AddExclusionCommand}" VerticalAlignment="Center" />
+            </Grid>
+            <ItemsControl ItemsSource="{Binding Exclusions}" Margin="66,0,0,0" IsVisible="{Binding HasExclusions}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:PathItemViewModel">
+                  <Border Classes="row" Padding="12,6" Margin="0,0,0,6">
+                    <Grid ColumnDefinitions="*,Auto">
+                      <TextBlock Classes="caption" Text="{Binding Path}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                      <Button AutomationProperties.Name="Kaldır" Grid.Column="1" Classes="small ghost" Command="{Binding RemoveCommand}">
+                        <mi:MaterialIcon Kind="Close" Width="16" Height="16" />
+                      </Button>
+                    </Grid>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+          <Border Classes="divider" />
+          <StackPanel Margin="18,14" Spacing="10">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+              <Border Classes="tile success"><mi:MaterialIcon Kind="FolderEyeOutline" /></Border>
+              <StackPanel Grid.Column="1" Margin="18,0" VerticalAlignment="Center">
+                <TextBlock Classes="h3" Text="Ek izlenen klasörler" />
+                <TextBlock Classes="caption" Text="İndirilenler, Masaüstü ve Belgeler'e ek olarak gerçek zamanlı izlenir" />
+              </StackPanel>
+              <Button Grid.Column="2" Classes="small" Content="Klasör ekle" Command="{Binding AddWatchedCommand}" VerticalAlignment="Center" />
+            </Grid>
+            <ItemsControl ItemsSource="{Binding WatchedFolders}" Margin="66,0,0,0" IsVisible="{Binding HasWatchedFolders}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:PathItemViewModel">
+                  <Border Classes="row" Padding="12,6" Margin="0,0,0,6">
+                    <Grid ColumnDefinitions="*,Auto">
+                      <TextBlock Classes="caption" Text="{Binding Path}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                      <Button AutomationProperties.Name="Kaldır" Grid.Column="1" Classes="small ghost" Command="{Binding RemoveCommand}">
+                        <mi:MaterialIcon Kind="Close" Width="16" Height="16" />
+                      </Button>
+                    </Grid>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+          <Border Classes="divider" />
+          <Grid Classes="setting" ColumnDefinitions="Auto,*,Auto">
+            <Border Classes="tile neutral"><mi:MaterialIcon Kind="CheckDecagramOutline" /></Border>
+            <StackPanel Grid.Column="1" Margin="18,0" VerticalAlignment="Center">
+              <TextBlock Classes="h3" Text="İzin verilen dosyalar" />
+              <TextBlock Classes="caption">
+                <Run Text="{Binding AllowedHashCount}" />
+                <Run Text=" dosya tehdit olarak işaretlenmeyecek" />
+              </TextBlock>
+            </StackPanel>
+            <Button Grid.Column="2" Classes="small ghost" Content="Listeyi temizle" Command="{Binding ClearAllowedCommand}" VerticalAlignment="Center" />
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <TextBlock Classes="section" Text="HAKKINDA" />
+      <Border Classes="card" Padding="0" Margin="0,0,0,14">
+        <StackPanel>
+          <Grid Classes="setting" ColumnDefinitions="Auto,*">
+            <Border Classes="tile neutral"><mi:MaterialIcon Kind="InformationOutline" /></Border>
+            <StackPanel Grid.Column="1" Margin="18,0" VerticalAlignment="Center">
+              <TextBlock Classes="h3" Text="Sürüm" />
+              <TextBlock Classes="caption" Text="{Binding VersionText}" />
+            </StackPanel>
+          </Grid>
+          <Border Classes="divider" />
+          <Grid Classes="setting" ColumnDefinitions="Auto,*,Auto">
+            <Border Classes="tile neutral"><mi:MaterialIcon Kind="Fingerprint" /></Border>
+            <StackPanel Grid.Column="1" Margin="18,0" VerticalAlignment="Center">
+              <TextBlock Classes="h3" Text="Kullanıcı Kimliği" />
+              <TextBlock Classes="caption" Text="{Binding UserId}" />
+            </StackPanel>
+            <Button AutomationProperties.Name="Kullanıcı kimliğini kopyala" Grid.Column="2" Classes="small ghost" Command="{Binding CopyUserIdCommand}" VerticalAlignment="Center">
+              <mi:MaterialIcon Kind="ContentCopy" Width="18" Height="18" />
+            </Button>
+          </Grid>
+          <Border Classes="divider" />
+          <Grid Classes="setting" ColumnDefinitions="Auto,*,Auto">
+            <Border Classes="tile neutral"><mi:MaterialIcon Kind="FolderOutline" /></Border>
+            <StackPanel Grid.Column="1" Margin="18,0" VerticalAlignment="Center">
+              <TextBlock Classes="h3" Text="Veri klasörü" />
+              <TextBlock Classes="caption" Text="{Binding DataFolder}" TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+            <Button Grid.Column="2" Classes="small ghost" Content="Aç" Command="{Binding OpenDataFolderCommand}" VerticalAlignment="Center" />
+          </Grid>
+          <Border Classes="divider" />
+          <Grid Classes="setting" ColumnDefinitions="Auto,*">
+            <Border Classes="tile neutral"><mi:MaterialIcon Kind="ScaleBalance" /></Border>
+            <StackPanel Grid.Column="1" Margin="18,0" VerticalAlignment="Center">
+              <TextBlock Classes="h3" Text="Veri kaynakları ve lisanslar" />
+              <TextBlock Classes="caption" TextWrapping="Wrap"
+                         Text="Web: VirusTotal · İmza akışı: MalwareBazaar (abuse.ch) · Oltalama akışı: OpenPhish Community · İhlal verisi: XposedOrNot · Pwned Passwords · Alan adı bilgisi: RDAP · Yazı tipi: Poppins (SIL OFL) · Simgeler: Material Design Icons" />
+            </StackPanel>
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <TextBlock Classes="caption muted" HorizontalAlignment="Center" Margin="0,10,0,0" Text="Nova Desktop Security · Pera Soft" />
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

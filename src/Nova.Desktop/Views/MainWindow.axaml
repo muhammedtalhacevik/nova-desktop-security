@@ -1,0 +1,148 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Nova.Desktop.ViewModels"
+        xmlns:svc="using:Nova.Desktop.Services"
+        xmlns:ui="using:Nova.Desktop.Controls"
+        xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        x:Class="Nova.Desktop.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Nova Desktop Security"
+        Icon="/Assets/nova.ico"
+        Width="1340" Height="880" MinWidth="1080" MinHeight="700"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource NovaSidebar}"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="PreferSystemChrome"
+        ExtendClientAreaTitleBarHeightHint="40">
+
+  <Grid ColumnDefinitions="268,*">
+
+    <Border Grid.Column="0" Background="{StaticResource NovaSidebar}"
+            BorderBrush="{StaticResource NovaSidebarBorder}" BorderThickness="0,0,1,0">
+      <DockPanel>
+        <Border DockPanel.Dock="Top" x:Name="SidebarHeader" Background="Transparent"
+                Padding="24,30,20,26">
+          <StackPanel Orientation="Horizontal" Spacing="12">
+            <Image Source="/Assets/nova-logo-256.png" Width="48" Height="48" />
+            <StackPanel VerticalAlignment="Center" Spacing="-2">
+              <TextBlock Text="NOVA" FontSize="27" FontWeight="ExtraBold" />
+              <TextBlock Text="DESKTOP SECURITY" FontSize="9.5" FontWeight="Medium" LetterSpacing="2.4" Foreground="#C8D0E0" />
+            </StackPanel>
+          </StackPanel>
+        </Border>
+
+        <StackPanel DockPanel.Dock="Bottom" Margin="16,8,16,20" Spacing="12">
+          <Button AutomationProperties.Name="Güvenlik Merkezi" Classes="cardbutton" Padding="14" CornerRadius="18" Command="{Binding GoCommand}" CommandParameter="center">
+            <Grid ColumnDefinitions="Auto,*">
+              <Border Classes="tile small" ui:Tone.Class="{Binding StatusTone}">
+                <mi:MaterialIcon Kind="{Binding StatusIcon}" />
+              </Border>
+              <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                <TextBlock Text="{Binding StatusText}" FontWeight="SemiBold" FontSize="13" TextTrimming="CharacterEllipsis" />
+                <TextBlock Text="Koruma durumu" Classes="caption" />
+              </StackPanel>
+            </Grid>
+          </Button>
+          <TextBlock Text="{Binding Version}" Classes="caption muted" HorizontalAlignment="Center" />
+        </StackPanel>
+
+        <TextBlock DockPanel.Dock="Top" Classes="section" Text="MENÜ" Margin="30,0,0,8" />
+
+        <ListBox Classes="nav" ItemsSource="{Binding NavItems}" SelectedItem="{Binding SelectedNav}">
+          <ListBox.ItemTemplate>
+            <DataTemplate x:DataType="vm:NavItemViewModel">
+              <Grid ColumnDefinitions="Auto,*,Auto">
+                <mi:MaterialIcon Classes="navicon" Kind="{Binding Icon}" Width="22" Height="22" />
+                <TextBlock Grid.Column="1" Classes="navlabel" Text="{Binding Title}" Margin="14,0,0,0" VerticalAlignment="Center" />
+                <Border Grid.Column="2" Classes="pill danger" Padding="8,1" IsVisible="{Binding HasBadge}">
+                  <TextBlock Text="{Binding Badge}" FontSize="11" />
+                </Border>
+              </Grid>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </DockPanel>
+    </Border>
+
+    <Panel Grid.Column="1" Background="{StaticResource NovaPageBackground}">
+      <DockPanel>
+        <Grid DockPanel.Dock="Top" x:Name="TopBar" Height="72" Background="Transparent"
+              ColumnDefinitions="*,Auto,Auto">
+          <StackPanel Orientation="Horizontal" Spacing="8" Margin="40,18,0,0" VerticalAlignment="Center">
+            <TextBlock Text="Nova" Classes="caption muted" />
+            <mi:MaterialIcon Kind="ChevronRight" Width="14" Height="14" Foreground="{StaticResource NovaTextMuted}" />
+            <TextBlock Text="{Binding CurrentPage.Title}" Classes="caption" />
+          </StackPanel>
+          <Button AutomationProperties.Name="Bildirimler" Grid.Column="1" Classes="round" Margin="0,18,16,0" VerticalAlignment="Center"
+                  Command="{Binding OpenNotificationsCommand}" ToolTip.Tip="Bildirimler">
+            <Panel>
+              <mi:MaterialIcon Kind="BellOutline" Width="22" Height="22" />
+              <Border Classes="pill danger" Padding="5,0" Margin="0,-12,-14,0"
+                      HorizontalAlignment="Right" VerticalAlignment="Top" IsVisible="{Binding HasUnread}">
+                <TextBlock Text="{Binding UnreadText}" FontSize="10" />
+              </Border>
+            </Panel>
+          </Button>
+          <Border Grid.Column="2" Width="40" IsVisible="{Binding !IsWindows}" />
+          <Border Grid.Column="2" Width="150" IsVisible="{Binding IsWindows}" />
+        </Grid>
+
+        <TransitioningContentControl Content="{Binding CurrentPage}">
+          <TransitioningContentControl.PageTransition>
+            <CrossFade Duration="0:0:0.18" />
+          </TransitioningContentControl.PageTransition>
+        </TransitioningContentControl>
+      </DockPanel>
+
+      <ItemsControl ItemsSource="{Binding Toasts}" Width="400" Margin="0,0,28,28"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="svc:ToastViewModel">
+            <Border Margin="0,10,0,0" CornerRadius="18" BoxShadow="0 14 34 0 #80000000">
+            <Button AutomationProperties.Name="Bildirimi aç" Classes="cardbutton" Padding="16" CornerRadius="18"
+                    Background="#1C2B5E" BorderBrush="#2E3F78"
+                    Command="{Binding OpenCommand}">
+              <Grid ColumnDefinitions="Auto,*,Auto">
+                <Border Classes="tile small" ui:Tone.Class="{Binding Tone}" VerticalAlignment="Top">
+                  <mi:MaterialIcon Kind="{Binding Icon}" />
+                </Border>
+                <StackPanel Grid.Column="1" Margin="14,0,8,0" Spacing="2" VerticalAlignment="Center">
+                  <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextWrapping="Wrap" />
+                  <TextBlock Text="{Binding Message}" Classes="caption" TextWrapping="Wrap" />
+                </StackPanel>
+                <Button AutomationProperties.Name="Kapat" Grid.Column="2" Classes="ghost" Padding="4" VerticalAlignment="Top" Command="{Binding CloseCommand}">
+                  <mi:MaterialIcon Kind="Close" Width="16" Height="16" Foreground="{StaticResource NovaTextSecondary}" />
+                </Button>
+              </Grid>
+            </Button>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </Panel>
+
+    <Border Grid.ColumnSpan="2" Background="{StaticResource NovaOverlay}" IsVisible="{Binding HasDialog}">
+      <Border Classes="card" Background="#16234E" BorderBrush="#2E3F78" Width="480" Padding="28"
+              HorizontalAlignment="Center" VerticalAlignment="Center" BoxShadow="0 24 60 0 #99000000"
+              DataContext="{Binding Dialog}" x:DataType="svc:ConfirmDialogViewModel">
+        <StackPanel Spacing="18">
+          <StackPanel Orientation="Horizontal" Spacing="14">
+            <Border Classes="tile warning" IsVisible="{Binding !IsDestructive}">
+              <mi:MaterialIcon Kind="HelpCircleOutline" />
+            </Border>
+            <Border Classes="tile danger" IsVisible="{Binding IsDestructive}">
+              <mi:MaterialIcon Kind="AlertOctagonOutline" />
+            </Border>
+            <TextBlock Text="{Binding Title}" Classes="h2" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="340" />
+          </StackPanel>
+          <TextBlock Text="{Binding Message}" Classes="sub" />
+          <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
+            <Button Content="{Binding CancelText}" Command="{Binding CancelCommand}" />
+            <Button Classes="primary" Content="{Binding ConfirmText}" Command="{Binding ConfirmCommand}" IsVisible="{Binding !IsDestructive}" />
+            <Button Classes="danger" Content="{Binding ConfirmText}" Command="{Binding ConfirmCommand}" IsVisible="{Binding IsDestructive}" />
+          </StackPanel>
+        </StackPanel>
+      </Border>
+    </Border>
+  </Grid>
+</Window>

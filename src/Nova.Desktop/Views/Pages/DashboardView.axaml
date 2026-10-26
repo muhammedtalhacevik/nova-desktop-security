@@ -1,0 +1,207 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Nova.Desktop.ViewModels"
+             xmlns:ui="using:Nova.Desktop.Controls"
+             xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             x:Class="Nova.Desktop.Views.Pages.DashboardView"
+             x:DataType="vm:DashboardViewModel">
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Margin="40,0,40,40" Spacing="26" MaxWidth="1240">
+
+      <StackPanel Spacing="2">
+        <TextBlock Classes="h1" Text="{Binding Greeting}" />
+        <TextBlock Classes="sub" Text="Güvenlik durumunuza genel bakış" />
+      </StackPanel>
+
+      <Border Classes="hero">
+        <Grid ColumnDefinitions="Auto,*,Auto">
+          <Border Classes="orb" ui:Tone.Class="{Binding StatusTone}" Margin="8,0,40,0" VerticalAlignment="Top">
+            <mi:MaterialIcon Kind="{Binding StatusIcon}" />
+          </Border>
+
+          <StackPanel Grid.Column="1" Spacing="10" VerticalAlignment="Center">
+            <TextBlock Classes="display" Text="{Binding Headline}" />
+            <TextBlock Classes="sub" FontSize="15" Text="{Binding Summary}" />
+            <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,10,0,4">
+              <Button AutomationProperties.Name="Hızlı Tarama" Classes="primary" Command="{Binding QuickScanCommand}">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                  <mi:MaterialIcon Kind="LightningBolt" Width="20" Height="20" />
+                  <TextBlock Text="HIZLI TARAMA" FontWeight="Bold" />
+                </StackPanel>
+              </Button>
+              <Button AutomationProperties.Name="Tam Tarama" Command="{Binding FullScanCommand}" Padding="22,13">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                  <mi:MaterialIcon Kind="Harddisk" Width="20" Height="20" />
+                  <TextBlock Text="Tam Tarama" />
+                </StackPanel>
+              </Button>
+            </StackPanel>
+            <ItemsControl ItemsSource="{Binding Issues}" IsVisible="{Binding HasIssues}" Margin="0,10,0,0" MaxWidth="620" HorizontalAlignment="Left" />
+          </StackPanel>
+
+          <UniformGrid Grid.Column="2" Columns="2" Width="340" Margin="28,0,0,0" VerticalAlignment="Center">
+            <Border Classes="row" Margin="0,0,10,10" Padding="16">
+              <StackPanel Spacing="6">
+                <mi:MaterialIcon Kind="ClockOutline" Width="22" Height="22" HorizontalAlignment="Left" Foreground="{StaticResource NovaAccentText}" />
+                <TextBlock Classes="stat" FontSize="18" Text="{Binding LastScanText}" TextTrimming="CharacterEllipsis" />
+                <TextBlock Classes="caption" Text="Son tarama" />
+              </StackPanel>
+            </Border>
+            <Border Classes="row" Margin="0,0,0,10" Padding="16">
+              <StackPanel Spacing="6">
+                <mi:MaterialIcon Kind="ShieldOffOutline" Width="22" Height="22" HorizontalAlignment="Left" Foreground="{StaticResource NovaDangerText}" />
+                <TextBlock Classes="stat" FontSize="18" Text="{Binding ThreatsText}" />
+                <TextBlock Classes="caption" Text="Tespit edilen tehdit" />
+              </StackPanel>
+            </Border>
+            <Border Classes="row" Margin="0,0,10,0" Padding="16">
+              <StackPanel Spacing="6">
+                <mi:MaterialIcon Kind="ArchiveLockOutline" Width="22" Height="22" HorizontalAlignment="Left" Foreground="{StaticResource NovaWarningText}" />
+                <TextBlock Classes="stat" FontSize="18" Text="{Binding QuarantineText}" />
+                <TextBlock Classes="caption" Text="Karantinada" />
+              </StackPanel>
+            </Border>
+            <Border Classes="row" Padding="16">
+              <StackPanel Spacing="6">
+                <mi:MaterialIcon Kind="FileSearchOutline" Width="22" Height="22" HorizontalAlignment="Left" Foreground="{StaticResource NovaSuccessText}" />
+                <TextBlock Classes="stat" FontSize="18" Text="{Binding FilesScannedText}" TextTrimming="CharacterEllipsis" />
+                <TextBlock Classes="caption" Text="Taranan dosya" />
+              </StackPanel>
+            </Border>
+          </UniformGrid>
+        </Grid>
+      </Border>
+
+      <Border Classes="card" Padding="22,20">
+        <Grid ColumnDefinitions="Auto,*,Auto">
+          <Border Classes="tile success">
+            <mi:MaterialIcon Kind="ShieldCheck" />
+          </Border>
+          <StackPanel Grid.Column="1" Margin="18,0" VerticalAlignment="Center" Spacing="2">
+            <TextBlock Classes="h3" Text="Gerçek Zamanlı Koruma" />
+            <TextBlock Classes="caption" Text="{Binding RealTimeDetail}" />
+          </StackPanel>
+          <ToggleSwitch Grid.Column="2" IsChecked="{Binding RealTimeEnabled}" VerticalAlignment="Center" />
+        </Grid>
+      </Border>
+
+      <StackPanel>
+        <TextBlock Classes="section" Text="GÜVENLİK ARAÇLARI" />
+        <UniformGrid Columns="3">
+          <Button AutomationProperties.Name="Virüs Taraması" Classes="cardbutton" Margin="0,0,14,14" Command="{Binding GoCommand}" CommandParameter="scan">
+            <StackPanel Spacing="14">
+              <Grid ColumnDefinitions="*,Auto">
+                <Border Classes="tile" HorizontalAlignment="Left"><mi:MaterialIcon Kind="ShieldSearch" /></Border>
+                <mi:MaterialIcon Grid.Column="1" Kind="ChevronRight" Width="20" Height="20" Foreground="{StaticResource NovaTextMuted}" />
+              </Grid>
+              <StackPanel Spacing="2">
+                <TextBlock Classes="h3" Text="Virüs Taraması" />
+                <TextBlock Classes="caption" Text="Hızlı, tam ve özel tarama ile raporlar" TextWrapping="Wrap" />
+              </StackPanel>
+            </StackPanel>
+          </Button>
+          <Button AutomationProperties.Name="Web Güvenliği" Classes="cardbutton" Margin="0,0,14,14" Command="{Binding GoCommand}" CommandParameter="web">
+            <StackPanel Spacing="14">
+              <Grid ColumnDefinitions="*,Auto">
+                <Border Classes="tile cyan" HorizontalAlignment="Left"><mi:MaterialIcon Kind="Web" /></Border>
+                <mi:MaterialIcon Grid.Column="1" Kind="ChevronRight" Width="20" Height="20" Foreground="{StaticResource NovaTextMuted}" />
+              </Grid>
+              <StackPanel Spacing="2">
+                <TextBlock Classes="h3" Text="Web Güvenliği" />
+                <TextBlock Classes="caption" Text="Bağlantıyı açmadan önce risk kontrolü" TextWrapping="Wrap" />
+              </StackPanel>
+            </StackPanel>
+          </Button>
+          <Button AutomationProperties.Name="Ağ Güvenliği" Classes="cardbutton" Margin="0,0,0,14" Command="{Binding GoCommand}" CommandParameter="network">
+            <StackPanel Spacing="14">
+              <Grid ColumnDefinitions="*,Auto">
+                <Border Classes="tile success" HorizontalAlignment="Left"><mi:MaterialIcon Kind="WifiLock" /></Border>
+                <mi:MaterialIcon Grid.Column="1" Kind="ChevronRight" Width="20" Height="20" Foreground="{StaticResource NovaTextMuted}" />
+              </Grid>
+              <StackPanel Spacing="2">
+                <TextBlock Classes="h3" Text="Ağ Güvenliği" />
+                <TextBlock Classes="caption" Text="Wi-Fi, IP, ağ geçidi ve DNS analizi" TextWrapping="Wrap" />
+              </StackPanel>
+            </StackPanel>
+          </Button>
+          <Button AutomationProperties.Name="Veri İhlali" Classes="cardbutton" Margin="0,0,14,0" Command="{Binding GoCommand}" CommandParameter="breach">
+            <StackPanel Spacing="14">
+              <Grid ColumnDefinitions="*,Auto">
+                <Border Classes="tile warning" HorizontalAlignment="Left"><mi:MaterialIcon Kind="EmailAlertOutline" /></Border>
+                <mi:MaterialIcon Grid.Column="1" Kind="ChevronRight" Width="20" Height="20" Foreground="{StaticResource NovaTextMuted}" />
+              </Grid>
+              <StackPanel Spacing="2">
+                <TextBlock Classes="h3" Text="Veri İhlali Kontrolü" />
+                <TextBlock Classes="caption" Text="E-postanız sızıntılarda yer alıyor mu?" TextWrapping="Wrap" />
+              </StackPanel>
+            </StackPanel>
+          </Button>
+          <Button AutomationProperties.Name="Gizlilik ve Başlangıç" Classes="cardbutton" Margin="0,0,14,0" Command="{Binding GoCommand}" CommandParameter="privacy">
+            <StackPanel Spacing="14">
+              <Grid ColumnDefinitions="*,Auto">
+                <Border Classes="tile purple" HorizontalAlignment="Left"><mi:MaterialIcon Kind="ShieldAccountOutline" /></Border>
+                <mi:MaterialIcon Grid.Column="1" Kind="ChevronRight" Width="20" Height="20" Foreground="{StaticResource NovaTextMuted}" />
+              </Grid>
+              <StackPanel Spacing="2">
+                <TextBlock Classes="h3" Text="Gizlilik ve Başlangıç" />
+                <TextBlock Classes="caption" Text="Başlangıç uygulamaları ve uygulama izinleri" TextWrapping="Wrap" />
+              </StackPanel>
+            </StackPanel>
+          </Button>
+          <Button AutomationProperties.Name="Güvenlik Merkezi" Classes="cardbutton" Command="{Binding GoCommand}" CommandParameter="center">
+            <StackPanel Spacing="14">
+              <Grid ColumnDefinitions="*,Auto">
+                <Border Classes="tile danger" HorizontalAlignment="Left"><mi:MaterialIcon Kind="ShieldHalfFull" /></Border>
+                <mi:MaterialIcon Grid.Column="1" Kind="ChevronRight" Width="20" Height="20" Foreground="{StaticResource NovaTextMuted}" />
+              </Grid>
+              <StackPanel Spacing="2">
+                <TextBlock Classes="h3" Text="Güvenlik Merkezi" />
+                <TextBlock Classes="caption" Text="Geçmiş, bildirimler ve karantina" TextWrapping="Wrap" />
+              </StackPanel>
+            </StackPanel>
+          </Button>
+        </UniformGrid>
+      </StackPanel>
+
+      <Grid ColumnDefinitions="*,24,*">
+        <Border Classes="card">
+          <StackPanel Spacing="16">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Classes="h2" Text="Son Etkinlikler" />
+              <Button Grid.Column="1" Classes="ghost" Content="Tümünü gör" Command="{Binding GoCommand}" CommandParameter="center" />
+            </Grid>
+            <ItemsControl ItemsSource="{Binding RecentEvents}" IsVisible="{Binding HasEvents}" />
+            <TextBlock Classes="sub" Text="Henüz etkinlik yok." IsVisible="{Binding !HasEvents}" />
+          </StackPanel>
+        </Border>
+
+        <Border Grid.Column="2" Classes="card">
+          <StackPanel Spacing="16">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Classes="h2" Text="Güvenlik İpuçları" />
+              <Border Grid.Column="1" Classes="pill"><TextBlock Text="5 ipucu" /></Border>
+            </Grid>
+            <ItemsControl ItemsSource="{Binding Tips}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:SecurityTip">
+                  <Border Classes="row" Margin="0,0,0,10" Padding="14">
+                    <Grid ColumnDefinitions="Auto,Auto,*">
+                      <Border Classes="bar" ui:Tone.Class="{Binding Tone}" Height="36" Margin="0,0,14,0" />
+                      <Border Grid.Column="1" Classes="tile small" ui:Tone.Class="{Binding Tone}">
+                        <mi:MaterialIcon Kind="{Binding Icon}" />
+                      </Border>
+                      <StackPanel Grid.Column="2" Margin="14,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Title}" FontWeight="SemiBold" />
+                        <TextBlock Text="{Binding Text}" Classes="caption" TextWrapping="Wrap" />
+                      </StackPanel>
+                    </Grid>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+      </Grid>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

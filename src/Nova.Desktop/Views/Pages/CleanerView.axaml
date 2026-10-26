@@ -1,0 +1,93 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Nova.Desktop.ViewModels"
+             xmlns:ui="using:Nova.Desktop.Controls"
+             xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             x:Class="Nova.Desktop.Views.Pages.CleanerView"
+             x:DataType="vm:CleanerViewModel">
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Margin="40,0,40,40" Spacing="24" MaxWidth="1240">
+
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel Spacing="2">
+          <TextBlock Classes="h1" Text="Temizleyici" />
+          <TextBlock Classes="sub" Text="Geçici dosyaları, önbellekleri ve eski güncelleme artıklarını silerek yer açın. Belgeleriniz asla silinmez." />
+        </StackPanel>
+        <Button Grid.Column="1" VerticalAlignment="Center" Command="{Binding ScanCommand}" IsEnabled="{Binding !IsScanning}" AutomationProperties.Name="Yeniden hesapla">
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <mi:MaterialIcon Kind="Refresh" Width="18" Height="18" />
+            <TextBlock Text="Yeniden Hesapla" />
+          </StackPanel>
+        </Button>
+      </Grid>
+
+      <Border Classes="hero">
+        <Grid ColumnDefinitions="Auto,*,Auto">
+          <Border Classes="orb accent" Margin="4,0,36,0" VerticalAlignment="Center">
+            <mi:MaterialIcon Kind="Broom" />
+          </Border>
+          <StackPanel Grid.Column="1" Spacing="6" VerticalAlignment="Center">
+            <TextBlock Classes="caption" Text="SEÇİLENLERDEN AÇILACAK ALAN" LetterSpacing="1.5" />
+            <TextBlock Classes="display" Text="{Binding SelectedText}" />
+            <TextBlock Classes="sub" Text="{Binding TotalText, StringFormat='Toplam temizlenebilir alan: {0}'}" />
+            <TextBlock Classes="caption" Text="{Binding SelectedCountText}" />
+            <TextBlock Classes="sub" Foreground="{StaticResource NovaSuccessText}" Text="{Binding ResultText}" IsVisible="{Binding HasResult}" />
+          </StackPanel>
+          <Button Grid.Column="2" Classes="cta" Command="{Binding CleanCommand}" IsEnabled="{Binding CanClean}" VerticalAlignment="Center"
+                  AutomationProperties.Name="Seçilenleri temizle">
+            <Panel>
+              <StackPanel Orientation="Horizontal" Spacing="10" IsVisible="{Binding !IsCleaning}">
+                <mi:MaterialIcon Kind="Broom" Width="20" Height="20" />
+                <TextBlock Text="Temizle" />
+              </StackPanel>
+              <TextBlock Text="Temizleniyor…" IsVisible="{Binding IsCleaning}" />
+            </Panel>
+          </Button>
+        </Grid>
+      </Border>
+
+      <Border Classes="card" Background="{StaticResource NovaWarningSoft}" BorderBrush="#40F5A524" IsVisible="{Binding ShowAdminBanner}">
+        <Grid ColumnDefinitions="Auto,*,Auto">
+          <mi:MaterialIcon Kind="ShieldKeyOutline" Width="24" Height="24" Foreground="{StaticResource NovaWarningText}" VerticalAlignment="Top" />
+          <StackPanel Grid.Column="1" Margin="14,0" Spacing="2">
+            <TextBlock FontWeight="SemiBold" Text="Bazı kategoriler yönetici izni gerektirir" />
+            <TextBlock Classes="caption" TextWrapping="Wrap" Text="Windows güncelleme artıkları ve Windows geçici klasörü için Nova'yı yönetici olarak yeniden başlatın. Diğer kategoriler şimdi de çalışır." />
+          </StackPanel>
+          <Button Grid.Column="2" Classes="small" Content="Yönetici olarak aç" Command="{Binding RestartAsAdminCommand}" VerticalAlignment="Center" />
+        </Grid>
+      </Border>
+
+      <ItemsControl ItemsSource="{Binding Categories}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="vm:CleanCategoryViewModel">
+            <Border Classes="card" Padding="20" Margin="0,0,0,12" CornerRadius="20">
+              <Grid ColumnDefinitions="Auto,Auto,*,Auto">
+                <CheckBox IsChecked="{Binding IsSelected}" VerticalAlignment="Center" MinWidth="0" Margin="0,0,14,0" AutomationProperties.Name="{Binding Title}" />
+                <Border Grid.Column="1" Classes="tile"><mi:MaterialIcon Kind="{Binding Icon}" /></Border>
+                <StackPanel Grid.Column="2" Margin="18,0" Spacing="3" VerticalAlignment="Center">
+                  <StackPanel Orientation="Horizontal" Spacing="10">
+                    <TextBlock Classes="h3" Text="{Binding Title}" />
+                    <Border Classes="pill warning" IsVisible="{Binding NeedsAdmin}"><TextBlock Text="Yönetici" /></Border>
+                  </StackPanel>
+                  <TextBlock Classes="caption" Text="{Binding Description}" TextWrapping="Wrap" />
+                  <TextBlock Classes="caption muted" Text="{Binding Detail}" />
+                  <TextBlock Classes="caption" Foreground="{StaticResource NovaWarningText}" IsVisible="{Binding Incomplete}"
+                             Text="Yönetici izni olmadan bu kategori eksik ölçülmüş olabilir." />
+                </StackPanel>
+                <TextBlock Grid.Column="3" Classes="stat" FontSize="20" Text="{Binding SizeText}" VerticalAlignment="Center" />
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+
+      <Border Classes="card" Background="{StaticResource NovaAccentSoft}" BorderBrush="#403B82F6">
+        <Grid ColumnDefinitions="Auto,*">
+          <mi:MaterialIcon Kind="InformationOutline" Width="24" Height="24" Foreground="{StaticResource NovaAccentText}" VerticalAlignment="Top" />
+          <TextBlock Grid.Column="1" Margin="14,0,0,0" Classes="sub"
+                     Text="Nova yalnızca geçici dosyaları, önbellekleri, hata raporlarını ve güncelleme artıklarını siler. Son 24 saatte değişen geçici dosyalar ile kullanımdaki dosyalar korunur. Çerezler, parolalar, geçmiş ve belgeleriniz silinmez." />
+        </Grid>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

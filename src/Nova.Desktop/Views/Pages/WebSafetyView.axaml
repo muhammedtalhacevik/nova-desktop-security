@@ -1,0 +1,155 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Nova.Desktop.ViewModels"
+             xmlns:ui="using:Nova.Desktop.Controls"
+             xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             x:Class="Nova.Desktop.Views.Pages.WebSafetyView"
+             x:DataType="vm:WebSafetyViewModel">
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Margin="40,0,40,40" Spacing="24" MaxWidth="1240">
+
+      <StackPanel Spacing="2">
+        <TextBlock Classes="h1" Text="Web Sitesi Güvenlik Kontrolü" />
+        <TextBlock Classes="sub" Text="Bir bağlantıyı açmadan önce Nova ile kontrol edin: adres doğrulanır, tehdit istihbaratına danışılır ve risk sonucu gösterilir." />
+      </StackPanel>
+
+      <Border Classes="card" Padding="26">
+        <StackPanel Spacing="14">
+          <Grid ColumnDefinitions="*,Auto,Auto">
+            <TextBox Classes="large" Text="{Binding Url}" Watermark="https://ornek.com veya ornek.com" x:Name="UrlBox">
+              <TextBox.InnerLeftContent>
+                <mi:MaterialIcon Kind="LinkVariant" Width="22" Height="22" Margin="16,0,0,0" Foreground="{StaticResource NovaTextMuted}" />
+              </TextBox.InnerLeftContent>
+              <TextBox.KeyBindings>
+                <KeyBinding Gesture="Enter" Command="{Binding CheckCommand}" />
+              </TextBox.KeyBindings>
+            </TextBox>
+            <Button AutomationProperties.Name="Panodan yapıştır" Grid.Column="1" Margin="12,0,0,0" Padding="16,0" Height="56" Command="{Binding PasteCommand}" ToolTip.Tip="Panodan yapıştır">
+              <mi:MaterialIcon Kind="ContentPaste" Width="20" Height="20" />
+            </Button>
+            <Button AutomationProperties.Name="Kontrol et" Grid.Column="2" Classes="primary" Margin="12,0,0,0" Height="56" Padding="32,0" Command="{Binding CheckCommand}">
+              <Panel>
+                <StackPanel Orientation="Horizontal" Spacing="10" IsVisible="{Binding !IsChecking}">
+                  <mi:MaterialIcon Kind="ShieldSearch" Width="20" Height="20" />
+                  <TextBlock Text="Kontrol Et" FontWeight="Bold" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="10" IsVisible="{Binding IsChecking}">
+                  <Arc Classes="spin" Width="18" Height="18" StartAngle="0" SweepAngle="270" Stroke="White" StrokeThickness="2.5" RenderTransform="rotate(0deg)" />
+                  <TextBlock Text="Kontrol ediliyor…" FontWeight="Bold" />
+                </StackPanel>
+              </Panel>
+            </Button>
+          </Grid>
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <mi:MaterialIcon Kind="InformationOutline" Width="16" Height="16" Foreground="{StaticResource NovaTextMuted}" />
+            <TextBlock Classes="caption" Text="{Binding ProviderSummary}" TextWrapping="Wrap" MaxWidth="1000" />
+          </StackPanel>
+          <Border Classes="row" Background="{StaticResource NovaDangerSoft}" IsVisible="{Binding HasError}">
+            <StackPanel Orientation="Horizontal" Spacing="10">
+              <mi:MaterialIcon Kind="AlertCircleOutline" Width="18" Height="18" Foreground="{StaticResource NovaDangerText}" />
+              <TextBlock Text="{Binding Error}" Foreground="{StaticResource NovaDangerText}" TextWrapping="Wrap" />
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </Border>
+
+      <StackPanel Spacing="24" IsVisible="{Binding HasResult}">
+        <Border Classes="hero">
+          <Grid ColumnDefinitions="Auto,*,Auto">
+            <Border Classes="orb" ui:Tone.Class="{Binding VerdictTone}" Margin="4,0,36,0" VerticalAlignment="Center">
+              <mi:MaterialIcon Kind="{Binding VerdictIcon}" />
+            </Border>
+            <StackPanel Grid.Column="1" Spacing="8" VerticalAlignment="Center">
+              <Border Classes="pill" ui:Tone.Class="{Binding VerdictTone}">
+                <TextBlock Text="{Binding VerdictText}" />
+              </Border>
+              <TextBlock Classes="display" FontSize="30" Text="{Binding Host}" TextTrimming="CharacterEllipsis" />
+              <TextBlock Classes="path" FontSize="13" Text="{Binding CheckedUrl}" />
+              <TextBlock Classes="sub" Text="{Binding VerdictSub}" MaxWidth="640" HorizontalAlignment="Left" />
+            </StackPanel>
+            <StackPanel Grid.Column="2" Width="200" Spacing="8" VerticalAlignment="Center" Margin="24,0,0,0">
+              <TextBlock Classes="caption" Text="GÜVENLİK PUANI" LetterSpacing="1.5" />
+              <TextBlock Classes="display" Text="{Binding ScoreText}" />
+              <ProgressBar Value="{Binding Score}" Maximum="100" Height="10" ui:Tone.Class="{Binding VerdictTone}" />
+            </StackPanel>
+          </Grid>
+        </Border>
+
+        <Grid ColumnDefinitions="*,24,*">
+          <Border Classes="card">
+            <StackPanel Spacing="14">
+              <TextBlock Classes="h2" Text="Tehdit İstihbaratı" />
+              <ItemsControl ItemsSource="{Binding Intel}" />
+            </StackPanel>
+          </Border>
+          <Border Grid.Column="2" Classes="card">
+            <StackPanel Spacing="14">
+              <TextBlock Classes="h2" Text="Bağlantı Bilgileri" />
+              <ItemsControl ItemsSource="{Binding Facts}">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate><UniformGrid Columns="2" /></ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+              </ItemsControl>
+            </StackPanel>
+          </Border>
+        </Grid>
+
+        <Border Classes="card">
+          <StackPanel Spacing="14">
+            <TextBlock Classes="h2" Text="Risk Sinyalleri" />
+            <ItemsControl ItemsSource="{Binding Signals}" IsVisible="{Binding HasSignals}" />
+            <StackPanel Orientation="Horizontal" Spacing="10" IsVisible="{Binding !HasSignals}">
+              <mi:MaterialIcon Kind="CheckCircleOutline" Width="20" Height="20" Foreground="{StaticResource NovaSuccessText}" />
+              <TextBlock Classes="sub" Text="Adreste bilinen bir risk sinyali bulunamadı." />
+            </StackPanel>
+          </StackPanel>
+        </Border>
+
+        <Border Classes="card" IsVisible="{Binding HasRedirects}">
+          <StackPanel Spacing="12">
+            <TextBlock Classes="h2" Text="Yönlendirme Zinciri" />
+            <ItemsControl ItemsSource="{Binding Redirects}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="x:String">
+                  <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,0,0,8">
+                    <mi:MaterialIcon Kind="ArrowDownRight" Width="16" Height="16" Foreground="{StaticResource NovaAccentText}" />
+                    <TextBlock Text="{Binding}" Classes="caption" TextWrapping="Wrap" MaxWidth="1000" />
+                  </StackPanel>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+      </StackPanel>
+
+      <Border Classes="card" IsVisible="{Binding HasHistory}">
+        <StackPanel Spacing="12">
+          <Grid ColumnDefinitions="*,Auto">
+            <TextBlock Classes="h2" Text="Son Kontroller" />
+            <Button Grid.Column="1" Classes="ghost" Content="Temizle" Command="{Binding ClearHistoryCommand}" />
+          </Grid>
+          <ItemsControl ItemsSource="{Binding History}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:UrlHistoryItem">
+                <Button AutomationProperties.Name="Sonucu göster" Classes="cardbutton" Padding="14,10" CornerRadius="14" Margin="0,0,0,8" Background="{StaticResource NovaRow}" BorderThickness="0"
+                        Command="{Binding ShowCommand}">
+                  <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                    <Ellipse Classes="dot" ui:Tone.Class="{Binding Tone}" VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="1" Margin="14,0">
+                      <TextBlock Text="{Binding Host}" FontWeight="SemiBold" />
+                      <TextBlock Text="{Binding Url}" Classes="path" />
+                    </StackPanel>
+                    <Border Grid.Column="2" Classes="pill" ui:Tone.Class="{Binding Tone}" Margin="0,0,14,0">
+                      <TextBlock Text="{Binding VerdictText}" />
+                    </Border>
+                    <TextBlock Grid.Column="3" Text="{Binding TimeText}" Classes="caption muted" VerticalAlignment="Center" />
+                  </Grid>
+                </Button>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

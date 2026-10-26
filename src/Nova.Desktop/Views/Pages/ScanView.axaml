@@ -1,0 +1,215 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Nova.Desktop.ViewModels"
+             xmlns:ui="using:Nova.Desktop.Controls"
+             xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             x:Class="Nova.Desktop.Views.Pages.ScanView"
+             x:DataType="vm:ScanViewModel">
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Margin="40,0,40,40" Spacing="26" MaxWidth="1240">
+
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel Spacing="2">
+          <TextBlock Classes="h1" Text="Virüs Taraması" />
+          <TextBlock Classes="sub" Text="Dosyalarınızı imza, sezgisel analiz ve sistem motoruyla tarayın" />
+        </StackPanel>
+        <Button AutomationProperties.Name="İmzaları Güncelle" Grid.Column="1" VerticalAlignment="Center" Command="{Binding UpdateSignaturesCommand}" IsEnabled="{Binding !IsUpdatingSignatures}">
+          <StackPanel Orientation="Horizontal" Spacing="10">
+            <mi:MaterialIcon Kind="DatabaseRefreshOutline" Width="20" Height="20" />
+            <StackPanel>
+              <TextBlock Text="İmzaları Güncelle" FontWeight="SemiBold" />
+              <TextBlock Text="{Binding SignatureUpdated}" Classes="caption" FontWeight="Normal" />
+            </StackPanel>
+          </StackPanel>
+        </Button>
+      </Grid>
+
+      <StackPanel Spacing="26" IsVisible="{Binding IsIdle}">
+        <Border Classes="hero" Padding="40,44">
+          <StackPanel HorizontalAlignment="Center" Spacing="12">
+            <Border Classes="orb accent" HorizontalAlignment="Center" Margin="0,0,0,18">
+              <mi:MaterialIcon Kind="ShieldSearch" />
+            </Border>
+            <TextBlock Classes="display" Text="Hızlı Tarama" HorizontalAlignment="Center" />
+            <TextBlock Classes="sub" TextAlignment="Center" MaxWidth="560" HorizontalAlignment="Center"
+                       Text="İndirilenler, masaüstü, geçici klasörler, başlangıç konumları ve çalışan işlemler zararlı yazılımlara karşı taranır." />
+            <Button AutomationProperties.Name="Hızlı Tarama" Classes="primary" HorizontalAlignment="Center" Margin="0,14,0,0" Padding="40,16" Command="{Binding QuickScanCommand}">
+              <StackPanel Orientation="Horizontal" Spacing="10">
+                <mi:MaterialIcon Kind="LightningBolt" Width="22" Height="22" />
+                <TextBlock Text="HIZLI TARAMAYI BAŞLAT" FontWeight="Bold" FontSize="16" />
+              </StackPanel>
+            </Button>
+            <TextBlock Classes="caption muted" HorizontalAlignment="Center" Text="{Binding LastQuickText}" />
+          </StackPanel>
+        </Border>
+
+        <StackPanel>
+          <TextBlock Classes="section" Text="DİĞER TARAMALAR" />
+          <UniformGrid Columns="3">
+            <Button AutomationProperties.Name="Tam Tarama" Classes="cardbutton" Margin="0,0,14,0" Command="{Binding FullScanCommand}">
+              <StackPanel Spacing="14">
+                <Border Classes="tile" HorizontalAlignment="Left"><mi:MaterialIcon Kind="Harddisk" /></Border>
+                <StackPanel Spacing="2">
+                  <TextBlock Classes="h3" Text="Tam Tarama" />
+                  <TextBlock Classes="caption" Text="Tüm yerel diskler ve çalışan işlemler. Uzun sürebilir." TextWrapping="Wrap" />
+                  <TextBlock Classes="caption muted" Text="{Binding LastFullText}" />
+                </StackPanel>
+              </StackPanel>
+            </Button>
+            <Button AutomationProperties.Name="Özel Tarama" Classes="cardbutton" Margin="0,0,14,0" Command="{Binding CustomScanCommand}">
+              <StackPanel Spacing="14">
+                <Border Classes="tile purple" HorizontalAlignment="Left"><mi:MaterialIcon Kind="FolderSearchOutline" /></Border>
+                <StackPanel Spacing="2">
+                  <TextBlock Classes="h3" Text="Özel Tarama" />
+                  <TextBlock Classes="caption" Text="Seçtiğiniz klasörleri ve harici sürücüleri tarayın." TextWrapping="Wrap" />
+                </StackPanel>
+              </StackPanel>
+            </Button>
+            <Button AutomationProperties.Name="Dosya Tara" Classes="cardbutton" Command="{Binding FileScanCommand}">
+              <StackPanel Spacing="14">
+                <Border Classes="tile cyan" HorizontalAlignment="Left"><mi:MaterialIcon Kind="FileSearchOutline" /></Border>
+                <StackPanel Spacing="2">
+                  <TextBlock Classes="h3" Text="Dosya Tara" />
+                  <TextBlock Classes="caption" Text="Dosya seçin ya da dosyaları pencereye sürükleyip bırakın." TextWrapping="Wrap" />
+                </StackPanel>
+              </StackPanel>
+            </Button>
+          </UniformGrid>
+        </StackPanel>
+
+        <Border Classes="card">
+          <StackPanel Spacing="14">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Classes="h2" Text="Tarama Motorları" />
+              <TextBlock Grid.Column="1" Classes="caption" Text="{Binding SignatureText}" VerticalAlignment="Center" />
+            </Grid>
+            <ItemsControl ItemsSource="{Binding Engines}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:EngineInfo">
+                  <Grid ColumnDefinitions="Auto,*" Margin="0,0,0,12">
+                    <Ellipse Classes="dot" ui:Tone.Class="{Binding Tone}" VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="1" Margin="14,0,0,0">
+                      <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                      <TextBlock Text="{Binding Detail}" Classes="caption" />
+                    </StackPanel>
+                  </Grid>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+      </StackPanel>
+
+      <Border Classes="hero" IsVisible="{Binding IsRunning}">
+        <Grid ColumnDefinitions="Auto,*">
+          <Panel Width="190" Height="190" Margin="0,0,44,0" VerticalAlignment="Center">
+            <Ellipse Stroke="#16FFFFFF" StrokeThickness="12" />
+            <Arc StartAngle="-90" SweepAngle="{Binding ProgressAngle}" Stroke="{StaticResource NovaAccent}"
+                 StrokeThickness="12" StrokeLineCap="Round" IsVisible="{Binding !IsIndeterminate}" />
+            <Arc Classes="spin" StartAngle="0" SweepAngle="80" Stroke="{StaticResource NovaAccent}"
+                 StrokeThickness="12" StrokeLineCap="Round" RenderTransform="rotate(0deg)" IsVisible="{Binding IsIndeterminate}" />
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="2">
+              <TextBlock Text="{Binding PercentText}" FontSize="34" FontWeight="ExtraBold" HorizontalAlignment="Center" IsVisible="{Binding !IsIndeterminate}" />
+              <mi:MaterialIcon Kind="ShieldSearch" Width="46" Height="46" Foreground="{StaticResource NovaAccentText}" IsVisible="{Binding IsIndeterminate}" />
+              <TextBlock Text="taranıyor" Classes="caption" HorizontalAlignment="Center" />
+            </StackPanel>
+          </Panel>
+
+          <StackPanel Grid.Column="1" Spacing="10" VerticalAlignment="Center">
+            <TextBlock Classes="h1" Text="{Binding RunningTitle}" />
+            <TextBlock Classes="sub" Text="{Binding RunningSub}" />
+            <Border Classes="row" Padding="14,10" Margin="0,6,0,6">
+              <StackPanel Orientation="Horizontal" Spacing="10">
+                <mi:MaterialIcon Kind="FileOutline" Width="16" Height="16" Foreground="{StaticResource NovaTextMuted}" />
+                <TextBlock Classes="path" Text="{Binding CurrentFile}" MaxWidth="640" />
+              </StackPanel>
+            </Border>
+            <UniformGrid Columns="4">
+              <StackPanel Margin="0,0,12,0">
+                <StackPanel Orientation="Horizontal" Spacing="4">
+                  <TextBlock Classes="stat" Text="{Binding FilesText}" />
+                  <TextBlock Classes="caption" Text="{Binding DiscoveredText}" VerticalAlignment="Bottom" Margin="0,0,0,4" />
+                </StackPanel>
+                <TextBlock Classes="caption" Text="Taranan dosya" />
+              </StackPanel>
+              <StackPanel>
+                <TextBlock Classes="stat" Text="{Binding ThreatsFoundText}" Foreground="{StaticResource NovaDangerText}" />
+                <TextBlock Classes="caption" Text="Tehdit" />
+              </StackPanel>
+              <StackPanel>
+                <TextBlock Classes="stat" Text="{Binding ElapsedText}" />
+                <TextBlock Classes="caption" Text="Geçen süre" />
+              </StackPanel>
+              <StackPanel>
+                <TextBlock Classes="stat" Text="{Binding SpeedText}" FontSize="20" />
+                <TextBlock Classes="caption" Text="Hız" />
+              </StackPanel>
+            </UniformGrid>
+            <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,12,0,0">
+              <Button AutomationProperties.Name="Duraklat veya devam et" Command="{Binding PauseResumeCommand}">
+                <Panel>
+                  <StackPanel Orientation="Horizontal" Spacing="8" IsVisible="{Binding !IsPaused}">
+                    <mi:MaterialIcon Kind="Pause" Width="18" Height="18" />
+                    <TextBlock Text="Duraklat" />
+                  </StackPanel>
+                  <StackPanel Orientation="Horizontal" Spacing="8" IsVisible="{Binding IsPaused}">
+                    <mi:MaterialIcon Kind="Play" Width="18" Height="18" />
+                    <TextBlock Text="Devam et" />
+                  </StackPanel>
+                </Panel>
+              </Button>
+              <Button AutomationProperties.Name="Taramayı durdur" Classes="danger" Command="{Binding StopCommand}">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                  <mi:MaterialIcon Kind="Stop" Width="18" Height="18" />
+                  <TextBlock Text="Taramayı durdur" />
+                </StackPanel>
+              </Button>
+            </StackPanel>
+          </StackPanel>
+        </Grid>
+      </Border>
+
+      <StackPanel Spacing="22" IsVisible="{Binding IsFinished}">
+        <Border Classes="hero">
+          <Grid ColumnDefinitions="Auto,*">
+            <Border Classes="orb" ui:Tone.Class="{Binding ResultTone}" Margin="8,0,40,0" VerticalAlignment="Center">
+              <mi:MaterialIcon Kind="{Binding ResultIcon}" />
+            </Border>
+            <StackPanel Grid.Column="1" Spacing="10" VerticalAlignment="Center">
+              <TextBlock Classes="display" Text="{Binding ResultHeadline}" />
+              <TextBlock Classes="sub" FontSize="15" Text="{Binding ResultSub}" />
+              <StackPanel Orientation="Horizontal" Spacing="40" Margin="0,10,0,6">
+                <StackPanel><TextBlock Classes="stat" Text="{Binding ResultFiles}" /><TextBlock Classes="caption" Text="Taranan dosya" /></StackPanel>
+                <StackPanel><TextBlock Classes="stat" Text="{Binding ResultThreats}" /><TextBlock Classes="caption" Text="Tehdit" /></StackPanel>
+                <StackPanel><TextBlock Classes="stat" Text="{Binding ResultDuration}" /><TextBlock Classes="caption" Text="Süre" /></StackPanel>
+                <StackPanel><TextBlock Classes="stat" Text="{Binding ResultData}" /><TextBlock Classes="caption" Text="Okunan veri" /></StackPanel>
+              </StackPanel>
+              <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,8,0,0">
+                <Button AutomationProperties.Name="Tümünü karantinaya al" Classes="cta" Command="{Binding QuarantineAllCommand}" IsVisible="{Binding HasPendingThreats}">
+                  <StackPanel Orientation="Horizontal" Spacing="10">
+                    <mi:MaterialIcon Kind="ArchiveLockOutline" Width="20" Height="20" />
+                    <TextBlock Text="Tümünü Karantinaya Al" />
+                  </StackPanel>
+                </Button>
+                <Button AutomationProperties.Name="Raporu dışa aktar" Command="{Binding ExportReportCommand}">
+                  <StackPanel Orientation="Horizontal" Spacing="8">
+                    <mi:MaterialIcon Kind="FileDocumentOutline" Width="18" Height="18" />
+                    <TextBlock Text="Raporu dışa aktar" />
+                  </StackPanel>
+                </Button>
+                <Button Classes="primary" Command="{Binding NewScanCommand}" Content="Yeni tarama" />
+              </StackPanel>
+            </StackPanel>
+          </Grid>
+        </Border>
+
+        <Border Classes="card" IsVisible="{Binding HasThreats}">
+          <StackPanel Spacing="16">
+            <TextBlock Classes="h2" Text="Tespit Edilen Tehditler" />
+            <ItemsControl ItemsSource="{Binding Threats}" />
+          </StackPanel>
+        </Border>
+      </StackPanel>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

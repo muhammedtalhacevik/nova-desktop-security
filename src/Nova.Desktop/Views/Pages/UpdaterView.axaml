@@ -1,0 +1,91 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Nova.Desktop.ViewModels"
+             xmlns:ui="using:Nova.Desktop.Controls"
+             xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             x:Class="Nova.Desktop.Views.Pages.UpdaterView"
+             x:DataType="vm:UpdaterViewModel">
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Margin="40,0,40,40" Spacing="24" MaxWidth="1240">
+
+      <Grid ColumnDefinitions="*,Auto,Auto">
+        <StackPanel Spacing="2">
+          <TextBlock Classes="h1" Text="Yazılım Güncelleyici" />
+          <TextBlock Classes="sub" Text="Eski sürüm uygulamalar güvenlik açıklarına yol açar. Güncel olmayanları bulun ve tek tıkla güncelleyin." />
+        </StackPanel>
+        <Button Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" Command="{Binding CheckCommand}" IsEnabled="{Binding !IsChecking}" AutomationProperties.Name="Yeniden denetle">
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <mi:MaterialIcon Kind="Refresh" Width="18" Height="18" />
+            <TextBlock Text="Denetle" />
+          </StackPanel>
+        </Button>
+        <Button Grid.Column="2" Classes="primary" VerticalAlignment="Center" Command="{Binding UpdateAllCommand}" IsVisible="{Binding HasUpdates}" IsEnabled="{Binding !IsUpdating}"
+                AutomationProperties.Name="Tümünü güncelle">
+          <StackPanel Orientation="Horizontal" Spacing="10">
+            <mi:MaterialIcon Kind="PackageUp" Width="20" Height="20" />
+            <TextBlock Text="Tümünü Güncelle" />
+          </StackPanel>
+        </Button>
+      </Grid>
+
+      <Border Classes="hero" IsVisible="{Binding IsChecking}">
+        <StackPanel HorizontalAlignment="Center" Spacing="16">
+          <Panel Width="96" Height="96" HorizontalAlignment="Center">
+            <Ellipse Stroke="#16FFFFFF" StrokeThickness="8" />
+            <Arc Classes="spin" StartAngle="0" SweepAngle="90" Stroke="{StaticResource NovaAccent}" StrokeThickness="8" StrokeLineCap="Round" RenderTransform="rotate(0deg)" />
+            <mi:MaterialIcon Kind="PackageVariantClosed" Width="36" Height="36" Foreground="{StaticResource NovaAccentText}" />
+          </Panel>
+          <TextBlock Classes="h2" Text="Yüklü uygulamalar denetleniyor…" HorizontalAlignment="Center" />
+          <TextBlock Classes="sub" Text="Bu işlem bir dakikaya kadar sürebilir." HorizontalAlignment="Center" />
+        </StackPanel>
+      </Border>
+
+      <Border Classes="card" Background="{StaticResource NovaDangerSoft}" BorderBrush="#55EF4444" IsVisible="{Binding HasError}">
+        <StackPanel Orientation="Horizontal" Spacing="12">
+          <mi:MaterialIcon Kind="AlertCircleOutline" Width="22" Height="22" Foreground="{StaticResource NovaDangerText}" />
+          <TextBlock Text="{Binding Error}" Foreground="{StaticResource NovaDangerText}" TextWrapping="Wrap" MaxWidth="1000" />
+        </StackPanel>
+      </Border>
+
+      <Border Classes="hero" IsVisible="{Binding AllCurrent}">
+        <StackPanel Orientation="Horizontal" Spacing="30" HorizontalAlignment="Center">
+          <Border Classes="orb small" VerticalAlignment="Center"><mi:MaterialIcon Kind="CheckAll" /></Border>
+          <StackPanel VerticalAlignment="Center" Spacing="4">
+            <TextBlock Classes="h1" Text="Tüm uygulamalar güncel" />
+            <TextBlock Classes="sub" Text="Güncellenebilir bir uygulama bulunamadı." />
+          </StackPanel>
+        </StackPanel>
+      </Border>
+
+      <StackPanel Spacing="12" IsVisible="{Binding HasUpdates}">
+        <TextBlock Classes="section" Text="{Binding Summary}" />
+        <ItemsControl ItemsSource="{Binding Items}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="vm:UpdateItemViewModel">
+              <Border Classes="card" Padding="18" Margin="0,0,0,10" CornerRadius="18">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                  <Panel Width="60" Height="60" VerticalAlignment="Top" Margin="-6,-6,0,0">
+                    <Ellipse Fill="{Binding Glow}" />
+                    <Image Source="{Binding Icon}" IsVisible="{Binding HasIcon}" Width="34" Height="34" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding Initial}" IsVisible="{Binding !HasIcon}" FontSize="22" FontWeight="Bold" Foreground="{StaticResource NovaAccentText}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                  </Panel>
+                  <StackPanel Grid.Column="1" Margin="16,0" Spacing="2" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                    <TextBlock Classes="caption" Text="{Binding Versions}" />
+                    <TextBlock Classes="caption" Foreground="{StaticResource NovaTextMuted}" Text="{Binding Id}" />
+                    <TextBlock Classes="caption" ui:Tone.Class="{Binding Tone}" Text="{Binding Status}" IsVisible="{Binding HasStatus}" TextWrapping="Wrap" />
+                    <ProgressBar IsVisible="{Binding IsBusy}" Value="{Binding Progress}" Maximum="100" IsIndeterminate="{Binding IsIndeterminate}" Height="6" MinHeight="6" Margin="0,6,0,0" MaxWidth="520" HorizontalAlignment="Left" />
+                  </StackPanel>
+                  <Button Grid.Column="2" Classes="small primary" Content="Güncelle" Command="{Binding UpdateCommand}" IsEnabled="{Binding CanUpdate}" VerticalAlignment="Center" />
+                </Grid>
+              </Border>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </StackPanel>
+
+      <TextBlock Classes="caption muted" TextWrapping="Wrap"
+                 Text="Güncellemeler Windows Paket Yöneticisi (winget) ile yapılır. Açık olan uygulamalar güncellenemeyebilir; kapatıp yeniden deneyin." />
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

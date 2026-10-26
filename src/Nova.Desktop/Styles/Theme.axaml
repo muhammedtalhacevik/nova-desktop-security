@@ -1,0 +1,107 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <FontFamily x:Key="NovaFont">avares://NovaDesktopSecurity/Assets/Fonts#Poppins</FontFamily>
+
+  <Color x:Key="NovaSidebarColor">#070E25</Color>
+  <Color x:Key="NovaBgTopColor">#0A1330</Color>
+  <Color x:Key="NovaBgMidColor">#11205A</Color>
+  <Color x:Key="NovaBgBottomColor">#1B3378</Color>
+
+  <SolidColorBrush x:Key="NovaSidebar" Color="#080F28" />
+  <SolidColorBrush x:Key="NovaSidebarBorder" Color="#14FFFFFF" />
+  <SolidColorBrush x:Key="NovaCard" Color="#0EFFFFFF" />
+  <SolidColorBrush x:Key="NovaCardHover" Color="#16FFFFFF" />
+  <SolidColorBrush x:Key="NovaCardBorder" Color="#1AFFFFFF" />
+  <SolidColorBrush x:Key="NovaCardSolid" Color="#16234E" />
+  <SolidColorBrush x:Key="NovaRow" Color="#09FFFFFF" />
+  <SolidColorBrush x:Key="NovaRowHover" Color="#12FFFFFF" />
+  <SolidColorBrush x:Key="NovaDivider" Color="#14FFFFFF" />
+  <SolidColorBrush x:Key="NovaOverlay" Color="#B3050A1C" />
+
+  <LinearGradientBrush x:Key="NovaPageBackground" StartPoint="0%,0%" EndPoint="100%,100%">
+    <GradientStop Offset="0" Color="#0A1330" />
+    <GradientStop Offset="0.55" Color="#10205A" />
+    <GradientStop Offset="1" Color="#1B3378" />
+  </LinearGradientBrush>
+
+  <LinearGradientBrush x:Key="NovaAvatarGradient" StartPoint="0%,0%" EndPoint="100%,100%">
+    <GradientStop Offset="0" Color="#3B82F6" />
+    <GradientStop Offset="1" Color="#8B5CF6" />
+  </LinearGradientBrush>
+
+  <LinearGradientBrush x:Key="NovaNavSelected" StartPoint="0%,50%" EndPoint="100%,50%">
+    <GradientStop Offset="0" Color="#403B82F6" />
+    <GradientStop Offset="1" Color="#0A3B82F6" />
+  </LinearGradientBrush>
+
+  <SolidColorBrush x:Key="NovaText" Color="#FFFFFF" />
+  <SolidColorBrush x:Key="NovaTextSecondary" Color="#A3ADC2" />
+  <SolidColorBrush x:Key="NovaTextMuted" Color="#6E7A96" />
+  <SolidColorBrush x:Key="NovaSectionLabel" Color="#7C879F" />
+
+  <Color x:Key="NovaAccentColor">#3B82F6</Color>
+  <SolidColorBrush x:Key="NovaAccent" Color="#3B82F6" />
+  <SolidColorBrush x:Key="NovaAccentHover" Color="#5193F8" />
+  <SolidColorBrush x:Key="NovaAccentPressed" Color="#2F6FDA" />
+  <SolidColorBrush x:Key="NovaAccentSoft" Color="#263B82F6" />
+  <SolidColorBrush x:Key="NovaAccentText" Color="#60A5FA" />
+
+  <SolidColorBrush x:Key="NovaSuccess" Color="#22C55E" />
+  <SolidColorBrush x:Key="NovaSuccessSoft" Color="#2622C55E" />
+  <SolidColorBrush x:Key="NovaSuccessText" Color="#4ADE80" />
+
+  <SolidColorBrush x:Key="NovaWarning" Color="#F5A524" />
+  <SolidColorBrush x:Key="NovaWarningSoft" Color="#26F5A524" />
+  <SolidColorBrush x:Key="NovaWarningText" Color="#FBBF24" />
+
+  <SolidColorBrush x:Key="NovaDanger" Color="#EF4444" />
+  <SolidColorBrush x:Key="NovaDangerSoft" Color="#26EF4444" />
+  <SolidColorBrush x:Key="NovaDangerText" Color="#F87171" />
+
+  <SolidColorBrush x:Key="NovaOrange" Color="#FF6B2C" />
+  <SolidColorBrush x:Key="NovaOrangeHover" Color="#FF8248" />
+  <SolidColorBrush x:Key="NovaPurple" Color="#8B5CF6" />
+  <SolidColorBrush x:Key="NovaPurpleSoft" Color="#268B5CF6" />
+  <SolidColorBrush x:Key="NovaCyan" Color="#38BDF8" />
+  <SolidColorBrush x:Key="NovaCyanSoft" Color="#2638BDF8" />
+  <SolidColorBrush x:Key="NovaNeutralSoft" Color="#14FFFFFF" />
+
+  <SolidColorBrush x:Key="TextControlBackground" Color="#0CFFFFFF" />
+  <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#12FFFFFF" />
+  <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="#14FFFFFF" />
+  <SolidColorBrush x:Key="TextControlBorderBrush" Color="#1FFFFFFF" />
+  <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="#33FFFFFF" />
+  <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#3B82F6" />
+  <SolidColorBrush x:Key="TextControlForeground" Color="#FFFFFF" />
+  <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#FFFFFF" />
+  <SolidColorBrush x:Key="TextControlForegroundFocused" Color="#FFFFFF" />
+  <SolidColorBrush x:Key="TextControlPlaceholderForeground" Color="#6E7A96" />
+  <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#7C879F" />
+  <SolidColorBrush x:Key="TextControlPlaceholderForegroundFocused" Color="#6E7A96" />
+  <SolidColorBrush x:Key="TextControlSelectionHighlightColor" Color="#663B82F6" />
+  <Thickness x:Key="TextControlBorderThemeThicknessFocused">1</Thickness>
+
+  <SolidColorBrush x:Key="ToggleSwitchFillOn" Color="#22C55E" />
+  <SolidColorBrush x:Key="ToggleSwitchFillOnPointerOver" Color="#2DD36B" />
+  <SolidColorBrush x:Key="ToggleSwitchFillOnPressed" Color="#1EAE53" />
+  <SolidColorBrush x:Key="ToggleSwitchFillOnDisabled" Color="#3322C55E" />
+  <SolidColorBrush x:Key="ToggleSwitchStrokeOn" Color="#22C55E" />
+  <SolidColorBrush x:Key="ToggleSwitchStrokeOnPointerOver" Color="#2DD36B" />
+  <SolidColorBrush x:Key="ToggleSwitchStrokeOnPressed" Color="#1EAE53" />
+  <SolidColorBrush x:Key="ToggleSwitchKnobFillOn" Color="#FFFFFF" />
+  <SolidColorBrush x:Key="ToggleSwitchKnobFillOnPointerOver" Color="#FFFFFF" />
+  <SolidColorBrush x:Key="ToggleSwitchKnobFillOnPressed" Color="#FFFFFF" />
+  <SolidColorBrush x:Key="ToggleSwitchFillOff" Color="#1AFFFFFF" />
+  <SolidColorBrush x:Key="ToggleSwitchFillOffPointerOver" Color="#24FFFFFF" />
+  <SolidColorBrush x:Key="ToggleSwitchStrokeOff" Color="#33FFFFFF" />
+  <SolidColorBrush x:Key="ToggleSwitchStrokeOffPointerOver" Color="#4DFFFFFF" />
+  <SolidColorBrush x:Key="ToggleSwitchKnobFillOff" Color="#C8D0E0" />
+  <SolidColorBrush x:Key="ToggleSwitchKnobFillOffPointerOver" Color="#FFFFFF" />
+
+  <SolidColorBrush x:Key="ScrollBarThumbFill" Color="#33FFFFFF" />
+  <SolidColorBrush x:Key="ScrollBarThumbFillPointerOver" Color="#55FFFFFF" />
+  <SolidColorBrush x:Key="ToolTipBackground" Color="#16234E" />
+  <SolidColorBrush x:Key="ToolTipBorderBrush" Color="#2AFFFFFF" />
+  <SolidColorBrush x:Key="ToolTipForeground" Color="#FFFFFF" />
+  <SolidColorBrush x:Key="FlyoutPresenterBackground" Color="#16234E" />
+</ResourceDictionary>

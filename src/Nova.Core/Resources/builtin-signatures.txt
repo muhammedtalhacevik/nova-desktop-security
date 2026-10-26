@@ -1,0 +1,12 @@
+# Nova Desktop Security - built-in signature set
+# Format:
+#   sha256:<hex>:<threat name>
+#   md5:<hex>:<threat name>
+# Byte patterns are compiled into the engine (obfuscated so that the engine binary itself is not flagged).
+#
+# EICAR standard anti-virus test file (68 bytes)
+sha256:275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f:EICAR-Test-File
+md5:44d88612fea8a8f36de82e1278abb02f:EICAR-Test-File
+# EICAR inside a zip (eicar_com.zip)
+sha256:2546dcffc5ad854d4ddc64fbf056871cd5a00f2471cb7a5bfd4ac23b6e9eedad:EICAR-Test-File.Zip
+md5:6ce6f415d8475545be5ba114f208b0ff:EICAR-Test-File.Zip

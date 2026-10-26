@@ -1,0 +1,85 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Nova.Desktop.ViewModels"
+             xmlns:ui="using:Nova.Desktop.Controls"
+             xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             x:Class="Nova.Desktop.Views.Pages.SecurityAuditView"
+             x:DataType="vm:SecurityAuditViewModel">
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Margin="40,0,40,40" Spacing="24" MaxWidth="1240">
+
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel Spacing="2">
+          <TextBlock Classes="h1" Text="Güvenlik Denetimi" />
+          <TextBlock Classes="sub" Text="Windows'un temel koruma ayarlarını denetler. Nova hiçbir ayarı kendiliğinden değiştirmez." />
+        </StackPanel>
+        <Button Grid.Column="1" Classes="primary" VerticalAlignment="Center" Command="{Binding RunCommand}" IsEnabled="{Binding !IsLoading}"
+                AutomationProperties.Name="Yeniden denetle">
+          <StackPanel Orientation="Horizontal" Spacing="10">
+            <mi:MaterialIcon Kind="Refresh" Width="20" Height="20" />
+            <TextBlock Text="Yeniden Denetle" />
+          </StackPanel>
+        </Button>
+      </Grid>
+
+      <Border Classes="hero" IsVisible="{Binding IsLoading}">
+        <StackPanel HorizontalAlignment="Center" Spacing="16">
+          <Panel Width="96" Height="96" HorizontalAlignment="Center">
+            <Ellipse Stroke="#16FFFFFF" StrokeThickness="8" />
+            <Arc Classes="spin" StartAngle="0" SweepAngle="90" Stroke="{StaticResource NovaAccent}" StrokeThickness="8" StrokeLineCap="Round" RenderTransform="rotate(0deg)" />
+            <mi:MaterialIcon Kind="ClipboardCheckOutline" Width="36" Height="36" Foreground="{StaticResource NovaAccentText}" />
+          </Panel>
+          <TextBlock Classes="h2" Text="Ayarlar denetleniyor…" HorizontalAlignment="Center" />
+        </StackPanel>
+      </Border>
+
+      <StackPanel Spacing="24" IsVisible="{Binding HasReport}">
+        <Border Classes="hero" IsVisible="{Binding !IsLoading}">
+          <Grid ColumnDefinitions="Auto,*,Auto">
+            <Border Classes="orb" ui:Tone.Class="{Binding Tone}" Margin="4,0,36,0" VerticalAlignment="Center">
+              <mi:MaterialIcon Kind="{Binding Icon}" />
+            </Border>
+            <StackPanel Grid.Column="1" Spacing="8" VerticalAlignment="Center">
+              <TextBlock Classes="display" FontSize="30" Text="{Binding Headline}" />
+              <TextBlock Classes="sub" Text="{Binding Sub}" MaxWidth="640" HorizontalAlignment="Left" />
+              <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,6,0,0">
+                <Border Classes="pill success"><TextBlock Text="{Binding PassText, StringFormat='{}{0} güvenli'}" /></Border>
+                <Border Classes="pill warning"><TextBlock Text="{Binding WarnText, StringFormat='{}{0} uyarı'}" /></Border>
+                <Border Classes="pill danger"><TextBlock Text="{Binding FailText, StringFormat='{}{0} risk'}" /></Border>
+                <TextBlock Classes="caption muted" Text="{Binding CheckedAt}" VerticalAlignment="Center" />
+              </StackPanel>
+            </StackPanel>
+            <StackPanel Grid.Column="2" Width="200" Spacing="8" VerticalAlignment="Center" Margin="24,0,0,0">
+              <TextBlock Classes="caption" Text="GÜVENLİK PUANI" LetterSpacing="1.5" />
+              <TextBlock Classes="display" Text="{Binding ScoreText}" />
+              <ProgressBar Value="{Binding Score}" Maximum="100" Height="10" ui:Tone.Class="{Binding Tone}" />
+            </StackPanel>
+          </Grid>
+        </Border>
+
+        <ItemsControl ItemsSource="{Binding Items}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="vm:AuditItemViewModel">
+              <Border Classes="card" Padding="20" Margin="0,0,0,12" CornerRadius="20">
+                <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                  <Border Classes="tile" ui:Tone.Class="{Binding Tone}" VerticalAlignment="Top">
+                    <mi:MaterialIcon Kind="{Binding Icon}" />
+                  </Border>
+                  <StackPanel Grid.Column="1" Margin="18,0" Spacing="3" VerticalAlignment="Center">
+                    <TextBlock Classes="h3" Text="{Binding Title}" TextWrapping="Wrap" />
+                    <TextBlock Classes="caption" Text="{Binding Detail}" TextWrapping="Wrap" />
+                    <TextBlock Classes="caption" Foreground="{StaticResource NovaAccentText}" Text="{Binding Advice}" TextWrapping="Wrap" IsVisible="{Binding HasAdvice}" />
+                  </StackPanel>
+                  <Border Grid.Column="2" Classes="pill" ui:Tone.Class="{Binding Tone}" Margin="0,0,14,0" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding StateText}" />
+                  </Border>
+                  <Button Grid.Column="3" Classes="small" Content="Düzelt" Command="{Binding FixCommand}" IsVisible="{Binding HasFix}" VerticalAlignment="Center" />
+                </Grid>
+              </Border>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </StackPanel>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

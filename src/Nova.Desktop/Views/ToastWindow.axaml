@@ -1,0 +1,31 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:svc="using:Nova.Desktop.Services"
+        xmlns:ui="using:Nova.Desktop.Controls"
+        xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        x:Class="Nova.Desktop.Views.ToastWindow"
+        x:DataType="svc:ToastViewModel"
+        Width="380" SizeToContent="Height"
+        SystemDecorations="None" CanResize="False" ShowInTaskbar="False" Topmost="True" ShowActivated="False"
+        Background="Transparent" TransparencyLevelHint="Transparent"
+        Title="Nova">
+  <Border Margin="10" Padding="16" CornerRadius="18" Background="#1C2B5E" BorderBrush="#2E3F78" BorderThickness="1"
+          BoxShadow="0 8 24 0 #80000000" x:Name="Root" Cursor="Hand">
+    <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto">
+      <Border Classes="tile small" ui:Tone.Class="{Binding Tone}" VerticalAlignment="Top" Grid.RowSpan="2">
+        <mi:MaterialIcon Kind="{Binding Icon}" />
+      </Border>
+      <StackPanel Grid.Column="1" Margin="14,0,8,0" Spacing="2">
+        <StackPanel Orientation="Horizontal" Spacing="6">
+          <Image Source="/Assets/nova-logo-256.png" Width="14" Height="14" />
+          <TextBlock Text="NOVA" FontSize="11" FontWeight="Bold" LetterSpacing="1.5" Foreground="#A3ADC2" />
+        </StackPanel>
+        <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextWrapping="Wrap" />
+        <TextBlock Text="{Binding Message}" Classes="caption" TextWrapping="Wrap" />
+      </StackPanel>
+      <Button Grid.Column="2" Classes="ghost" Padding="4" VerticalAlignment="Top" x:Name="CloseButton">
+        <mi:MaterialIcon Kind="Close" Width="16" Height="16" Foreground="#A3ADC2" />
+      </Button>
+    </Grid>
+  </Border>
+</Window>

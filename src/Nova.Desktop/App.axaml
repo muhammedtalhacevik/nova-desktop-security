@@ -1,0 +1,134 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Nova.Desktop.ViewModels"
+             xmlns:pages="using:Nova.Desktop.Views.Pages"
+             xmlns:ui="using:Nova.Desktop.Controls"
+             xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             x:Class="Nova.Desktop.App"
+             Name="Nova Desktop Security"
+             RequestedThemeVariant="Dark">
+
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="/Styles/Theme.axaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Application.Resources>
+
+  <Application.DataTemplates>
+    <DataTemplate DataType="vm:DashboardViewModel"><pages:DashboardView /></DataTemplate>
+    <DataTemplate DataType="vm:ScanViewModel"><pages:ScanView /></DataTemplate>
+    <DataTemplate DataType="vm:WebSafetyViewModel"><pages:WebSafetyView /></DataTemplate>
+    <DataTemplate DataType="vm:NetworkViewModel"><pages:NetworkView /></DataTemplate>
+    <DataTemplate DataType="vm:BreachViewModel"><pages:BreachView /></DataTemplate>
+    <DataTemplate DataType="vm:PrivacyViewModel"><pages:PrivacyView /></DataTemplate>
+    <DataTemplate DataType="vm:SecurityCenterViewModel"><pages:SecurityCenterView /></DataTemplate>
+    <DataTemplate DataType="vm:SettingsViewModel"><pages:SettingsView /></DataTemplate>
+    <DataTemplate DataType="vm:SecurityAuditViewModel"><pages:SecurityAuditView /></DataTemplate>
+    <DataTemplate DataType="vm:CleanerViewModel"><pages:CleanerView /></DataTemplate>
+    <DataTemplate DataType="vm:UpdaterViewModel"><pages:UpdaterView /></DataTemplate>
+
+    <DataTemplate DataType="vm:EventItemViewModel">
+      <Grid ColumnDefinitions="Auto,*,Auto" Margin="0,0,0,16">
+        <Border Classes="tile small" ui:Tone.Class="{Binding Tone}" VerticalAlignment="Top">
+          <mi:MaterialIcon Kind="{Binding Icon}" />
+        </Border>
+        <StackPanel Grid.Column="1" Margin="14,0,12,0" VerticalAlignment="Center" Spacing="1">
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+            <Ellipse Classes="dot accent" Width="8" Height="8" VerticalAlignment="Center" IsVisible="{Binding IsUnread}" />
+          </StackPanel>
+          <TextBlock Text="{Binding Message}" Classes="caption" TextWrapping="Wrap" />
+        </StackPanel>
+        <TextBlock Grid.Column="2" Text="{Binding TimeText}" Classes="caption muted" ToolTip.Tip="{Binding FullTime}" />
+      </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="vm:IssueItemViewModel">
+      <Border Classes="row" Margin="0,0,0,8" Padding="14,12">
+        <Grid ColumnDefinitions="Auto,*,Auto">
+          <Border Classes="tile small" ui:Tone.Class="{Binding Tone}">
+            <mi:MaterialIcon Kind="{Binding Icon}" />
+          </Border>
+          <StackPanel Grid.Column="1" Margin="14,0,12,0" VerticalAlignment="Center" Spacing="1">
+            <TextBlock Text="{Binding Title}" FontWeight="SemiBold" />
+            <TextBlock Text="{Binding Detail}" Classes="caption" TextWrapping="Wrap" />
+          </StackPanel>
+          <Button Grid.Column="2" Classes="small primary" Content="{Binding ActionText}" Command="{Binding FixCommand}" VerticalAlignment="Center" />
+        </Grid>
+      </Border>
+    </DataTemplate>
+
+    <DataTemplate DataType="vm:ThreatItemViewModel">
+      <Border Classes="row" Margin="0,0,0,10" Padding="18,16">
+        <Grid ColumnDefinitions="Auto,*,Auto">
+          <Border Classes="tile" ui:Tone.Class="{Binding SeverityTone}" VerticalAlignment="Top">
+            <mi:MaterialIcon Kind="Virus" />
+          </Border>
+          <StackPanel Grid.Column="1" Margin="16,0,16,0" Spacing="4">
+            <WrapPanel Orientation="Horizontal">
+              <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="15" Margin="0,0,10,0" VerticalAlignment="Center" />
+              <Border Classes="pill" ui:Tone.Class="{Binding SeverityTone}" Margin="0,0,6,0">
+                <TextBlock Text="{Binding SeverityText}" />
+              </Border>
+              <Border Classes="pill" ui:Tone.Class="{Binding ActionTone}">
+                <TextBlock Text="{Binding ActionText}" />
+              </Border>
+            </WrapPanel>
+            <TextBlock Text="{Binding FilePath}" Classes="path" ToolTip.Tip="{Binding FilePath}" />
+            <TextBlock Text="{Binding Description}" Classes="caption" TextWrapping="Wrap" />
+            <TextBlock Text="{Binding Engine}" Classes="caption muted" />
+          </StackPanel>
+          <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+            <Button Classes="small primary" Content="Karantinaya al" Command="{Binding QuarantineCommand}" IsVisible="{Binding IsPending}" />
+            <Button Classes="small" Content="İzin ver" Command="{Binding AllowCommand}" IsVisible="{Binding IsPending}" />
+            <Button Classes="small danger" Content="Sil" Command="{Binding DeleteCommand}" IsVisible="{Binding IsPending}" />
+            <Button AutomationProperties.Name="Dosya konumunu göster" Classes="small ghost" Command="{Binding RevealCommand}" ToolTip.Tip="Dosya konumunu göster" IsVisible="{Binding IsPending}">
+              <mi:MaterialIcon Kind="FolderOpenOutline" Width="18" Height="18" />
+            </Button>
+          </StackPanel>
+        </Grid>
+      </Border>
+    </DataTemplate>
+
+    <DataTemplate DataType="vm:StatusRow">
+      <Border Classes="row" Margin="0,0,0,8">
+        <Grid ColumnDefinitions="Auto,*">
+          <Border Classes="tile small" ui:Tone.Class="{Binding Tone}" VerticalAlignment="Top">
+            <mi:MaterialIcon Kind="{Binding Icon}" />
+          </Border>
+          <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center" Spacing="2">
+            <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextWrapping="Wrap" />
+            <TextBlock Text="{Binding Detail}" Classes="caption" TextWrapping="Wrap" />
+            <TextBlock Text="{Binding Advice}" Classes="caption" Foreground="{StaticResource NovaAccentText}" TextWrapping="Wrap" IsVisible="{Binding HasAdvice}" />
+          </StackPanel>
+        </Grid>
+      </Border>
+    </DataTemplate>
+
+    <DataTemplate DataType="vm:InfoPair">
+      <Border Classes="row" Margin="0,0,10,10" Padding="14,12">
+        <Grid ColumnDefinitions="Auto,*">
+          <Border Classes="tile small neutral">
+            <mi:MaterialIcon Kind="{Binding Icon}" />
+          </Border>
+          <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+            <TextBlock Text="{Binding Label}" Classes="caption" />
+            <TextBlock Text="{Binding Value}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding Value}" />
+          </StackPanel>
+        </Grid>
+      </Border>
+    </DataTemplate>
+  </Application.DataTemplates>
+
+  <Application.Styles>
+    <FluentTheme>
+      <FluentTheme.Palettes>
+        <ColorPaletteResources x:Key="Dark" Accent="#FF3B82F6" RegionColor="#FF0A1330" ErrorText="#FFF87171" />
+      </FluentTheme.Palettes>
+    </FluentTheme>
+    <mi:MaterialIconStyles />
+    <StyleInclude Source="/Styles/Controls.axaml" />
+  </Application.Styles>
+</Application>

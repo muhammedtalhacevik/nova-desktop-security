@@ -1,0 +1,116 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Nova.Desktop.ViewModels"
+             xmlns:ui="using:Nova.Desktop.Controls"
+             xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             x:Class="Nova.Desktop.Views.Pages.NetworkView"
+             x:DataType="vm:NetworkViewModel">
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Margin="40,0,40,40" Spacing="24" MaxWidth="1240">
+
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel Spacing="2">
+          <TextBlock Classes="h1" Text="Ağ Güvenliği" />
+          <TextBlock Classes="sub" Text="Bağlı ağınızı, IP adresinizi, ağ geçidini ve DNS ayarlarını inceleyin" />
+        </StackPanel>
+        <Button AutomationProperties.Name="Yeniden analiz et" Grid.Column="1" Classes="primary" VerticalAlignment="Center" Command="{Binding AnalyzeCommand}" IsEnabled="{Binding !IsLoading}">
+          <StackPanel Orientation="Horizontal" Spacing="10">
+            <mi:MaterialIcon Kind="Refresh" Width="20" Height="20" />
+            <TextBlock Text="Yeniden Analiz Et" />
+          </StackPanel>
+        </Button>
+      </Grid>
+
+      <Border Classes="hero" IsVisible="{Binding IsLoading}">
+        <StackPanel HorizontalAlignment="Center" Spacing="16">
+          <Panel Width="96" Height="96" HorizontalAlignment="Center">
+            <Ellipse Stroke="#16FFFFFF" StrokeThickness="8" />
+            <Arc Classes="spin" StartAngle="0" SweepAngle="90" Stroke="{StaticResource NovaAccent}" StrokeThickness="8" StrokeLineCap="Round" RenderTransform="rotate(0deg)" />
+            <mi:MaterialIcon Kind="WifiLock" Width="36" Height="36" Foreground="{StaticResource NovaAccentText}" />
+          </Panel>
+          <TextBlock Classes="h2" Text="Ağ analiz ediliyor…" HorizontalAlignment="Center" />
+          <TextBlock Classes="sub" Text="Wi-Fi şifrelemesi, ağ geçidi, DNS yanıtları, ARP tablosu ve açık servisler kontrol ediliyor." HorizontalAlignment="Center" TextAlignment="Center" />
+        </StackPanel>
+      </Border>
+
+      <StackPanel Spacing="24" IsVisible="{Binding HasReport}">
+        <Border Classes="hero" IsVisible="{Binding !IsLoading}">
+          <Grid ColumnDefinitions="Auto,*,Auto">
+            <Border Classes="orb" ui:Tone.Class="{Binding VerdictTone}" Margin="4,0,36,0" VerticalAlignment="Center">
+              <mi:MaterialIcon Kind="{Binding NetworkIcon}" />
+            </Border>
+            <StackPanel Grid.Column="1" Spacing="8" VerticalAlignment="Center">
+              <TextBlock Classes="caption" Text="BAĞLI AĞ" LetterSpacing="1.5" />
+              <TextBlock Classes="display" Text="{Binding NetworkName}" TextTrimming="CharacterEllipsis" />
+              <TextBlock Classes="sub" Text="{Binding NetworkSub}" />
+              <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,6,0,0">
+                <Border Classes="pill" ui:Tone.Class="{Binding VerdictTone}">
+                  <TextBlock Text="{Binding VerdictText}" />
+                </Border>
+                <TextBlock Classes="caption muted" Text="{Binding CheckedAt}" VerticalAlignment="Center" />
+              </StackPanel>
+              <TextBlock Classes="sub" Text="{Binding VerdictSub}" />
+            </StackPanel>
+            <Button AutomationProperties.Name="Konum iznini aç" Grid.Column="2" VerticalAlignment="Center" IsVisible="{Binding NeedsLocation}" Command="{Binding OpenLocationSettingsCommand}">
+              <StackPanel Orientation="Horizontal" Spacing="8">
+                <mi:MaterialIcon Kind="MapMarkerOutline" Width="18" Height="18" />
+                <TextBlock Text="Konum iznini aç" />
+              </StackPanel>
+            </Button>
+          </Grid>
+        </Border>
+
+        <Border Classes="card">
+          <StackPanel Spacing="14">
+            <TextBlock Classes="h2" Text="Bağlantı Ayrıntıları" />
+            <ItemsControl ItemsSource="{Binding Facts}">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate><UniformGrid Columns="3" /></ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+
+        <Border Classes="card">
+          <StackPanel Spacing="14">
+            <StackPanel Spacing="2">
+              <TextBlock Classes="h2" Text="Güvenlik Kontrolleri" />
+              <TextBlock Classes="caption" Text="Nova'nın kontrol edebildiği bağlantı ve yapılandırma göstergeleri" />
+            </StackPanel>
+            <ItemsControl ItemsSource="{Binding Checks}">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate><UniformGrid Columns="2" /></ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <ItemsControl.Styles>
+                <Style Selector="ItemsControl > ContentPresenter">
+                  <Setter Property="Margin" Value="0,0,10,2" />
+                </Style>
+              </ItemsControl.Styles>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+
+        <Border Classes="card" IsVisible="{Binding HasOtherAdapters}">
+          <StackPanel Spacing="14">
+            <TextBlock Classes="h2" Text="Diğer Ağ Bağdaştırıcıları" />
+            <ItemsControl ItemsSource="{Binding OtherAdapters}">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate><UniformGrid Columns="3" /></ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+      </StackPanel>
+
+      <Border Classes="card" Background="{StaticResource NovaAccentSoft}" BorderBrush="#403B82F6">
+        <Grid ColumnDefinitions="Auto,*">
+          <mi:MaterialIcon Kind="InformationOutline" Width="24" Height="24" Foreground="{StaticResource NovaAccentText}" VerticalAlignment="Top" />
+          <StackPanel Grid.Column="1" Margin="14,0,0,0" Spacing="4">
+            <TextBlock FontWeight="SemiBold" Text="Bu kontroller bir garanti değildir" />
+            <TextBlock Classes="sub" Text="Nova bazı risk sinyallerini (şifresiz Wi-Fi, değiştirilmiş DNS, ARP sahteciliği, trafik müdahalesi, açık servisler) tespit edebilir. Ancak yalnızca bu kontrollerle bir Wi-Fi ağının kesinlikle güvenli olduğu söylenemez. Halka açık ağlarda hassas işlemler için VPN kullanın." />
+          </StackPanel>
+        </Grid>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

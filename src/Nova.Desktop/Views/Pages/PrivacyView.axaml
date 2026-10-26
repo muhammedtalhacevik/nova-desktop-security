@@ -1,0 +1,161 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Nova.Desktop.ViewModels"
+             xmlns:ui="using:Nova.Desktop.Controls"
+             xmlns:mi="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             x:Class="Nova.Desktop.Views.Pages.PrivacyView"
+             x:DataType="vm:PrivacyViewModel">
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Margin="40,0,40,40" Spacing="22" MaxWidth="1240">
+
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel Spacing="2">
+          <TextBlock Classes="h1" Text="Gizlilik ve Başlangıç Uygulamaları" />
+          <TextBlock Classes="sub" Text="Oturum açılışında çalışan programları ve hassas izinlere erişen uygulamaları yönetin" />
+        </StackPanel>
+        <Button AutomationProperties.Name="Yenile" Grid.Column="1" VerticalAlignment="Center" Command="{Binding RefreshCommand}" IsEnabled="{Binding !IsLoading}">
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <mi:MaterialIcon Kind="Refresh" Width="18" Height="18" />
+            <TextBlock Text="Yenile" />
+          </StackPanel>
+        </Button>
+      </Grid>
+
+      <UniformGrid Columns="4">
+        <Border Classes="card" Padding="18" Margin="0,0,14,0">
+          <StackPanel Orientation="Horizontal" Spacing="14">
+            <Border Classes="tile"><mi:MaterialIcon Kind="RocketLaunchOutline" /></Border>
+            <StackPanel VerticalAlignment="Center"><TextBlock Classes="stat" Text="{Binding TotalCount}" /><TextBlock Classes="caption" Text="Başlangıç öğesi" /></StackPanel>
+          </StackPanel>
+        </Border>
+        <Border Classes="card" Padding="18" Margin="0,0,14,0">
+          <StackPanel Orientation="Horizontal" Spacing="14">
+            <Border Classes="tile success"><mi:MaterialIcon Kind="PlayCircleOutline" /></Border>
+            <StackPanel VerticalAlignment="Center"><TextBlock Classes="stat" Text="{Binding EnabledCount}" /><TextBlock Classes="caption" Text="Etkin" /></StackPanel>
+          </StackPanel>
+        </Border>
+        <Border Classes="card" Padding="18" Margin="0,0,14,0">
+          <StackPanel Orientation="Horizontal" Spacing="14">
+            <Border Classes="tile warning"><mi:MaterialIcon Kind="AlertOutline" /></Border>
+            <StackPanel VerticalAlignment="Center"><TextBlock Classes="stat" Text="{Binding WarningCount}" /><TextBlock Classes="caption" Text="Uyarılı öğe" /></StackPanel>
+          </StackPanel>
+        </Border>
+        <Border Classes="card" Padding="18">
+          <StackPanel Orientation="Horizontal" Spacing="14">
+            <Border Classes="tile danger"><mi:MaterialIcon Kind="RecordCircleOutline" /></Border>
+            <StackPanel VerticalAlignment="Center"><TextBlock Classes="stat" Text="{Binding InUseCount}" /><TextBlock Classes="caption" Text="Şu an izin kullanan" /></StackPanel>
+          </StackPanel>
+        </Border>
+      </UniformGrid>
+
+      <TabControl SelectedIndex="{Binding SelectedTab}" Padding="0,16,0,0">
+        <TabItem Header="Başlangıç Uygulamaları">
+          <StackPanel Spacing="12">
+            <Grid ColumnDefinitions="*,Auto,Auto">
+              <TextBlock Classes="caption" VerticalAlignment="Center" TextWrapping="Wrap"
+                         Text="Gereksiz başlangıç uygulamalarını kapatmak açılışı hızlandırır; tanımadığınız, imzasız veya uyarılı öğeleri inceleyin." />
+              <Button Grid.Column="1" Classes="small" Margin="12,0,0,0" Content="Oturum açma öğelerini oku" IsVisible="{Binding IsMac}" Command="{Binding LoadLoginItemsCommand}" />
+              <Button Grid.Column="2" Classes="small ghost" Margin="8,0,0,0" Content="Sistem ayarlarında aç" Command="{Binding OpenStartupSettingsCommand}" />
+            </Grid>
+
+            <TextBlock Classes="sub" Text="Liste yükleniyor…" IsVisible="{Binding IsLoading}" />
+
+            <ItemsControl ItemsSource="{Binding StartupItems}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:StartupItemViewModel">
+                  <Border Classes="card" Padding="18" Margin="0,0,0,10" CornerRadius="20">
+                    <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                      <Panel Width="60" Height="60" VerticalAlignment="Top" Margin="-6,-6,0,0">
+                        <Ellipse Fill="{Binding Glow}" />
+                        <Image Source="{Binding Icon}" IsVisible="{Binding HasIcon}" Width="34" Height="34" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding Initial}" IsVisible="{Binding !HasIcon}" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                      </Panel>
+                      <StackPanel Grid.Column="1" Margin="16,0" Spacing="4">
+                        <WrapPanel>
+                          <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="15" Margin="0,0,10,0" VerticalAlignment="Center" />
+                          <Border Classes="pill" ui:Tone.Class="{Binding SignedTone}" Margin="0,0,6,0"><TextBlock Text="{Binding SignedText}" /></Border>
+                          <Border Classes="pill"><TextBlock Text="{Binding Location}" /></Border>
+                        </WrapPanel>
+                        <TextBlock Classes="caption" Text="{Binding Publisher}" />
+                        <TextBlock Classes="path" Text="{Binding Command}" ToolTip.Tip="{Binding Command}" MaxWidth="760" HorizontalAlignment="Left" />
+                        <StackPanel Orientation="Horizontal" Spacing="6" IsVisible="{Binding HasWarnings}">
+                          <mi:MaterialIcon Kind="AlertOutline" Width="15" Height="15" Foreground="{StaticResource NovaWarningText}" />
+                          <TextBlock Classes="caption" Foreground="{StaticResource NovaWarningText}" Text="{Binding Warnings}" TextWrapping="Wrap" MaxWidth="740" />
+                        </StackPanel>
+                      </StackPanel>
+                      <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4" VerticalAlignment="Center" Margin="0,0,12,0">
+                        <Button AutomationProperties.Name="Bu programı tara" Classes="small ghost" Command="{Binding ScanCommand}" ToolTip.Tip="Bu programı tara">
+                          <mi:MaterialIcon Kind="ShieldSearch" Width="18" Height="18" />
+                        </Button>
+                        <Button AutomationProperties.Name="Dosya konumunu göster" Classes="small ghost" Command="{Binding RevealCommand}" ToolTip.Tip="Dosya konumunu göster">
+                          <mi:MaterialIcon Kind="FolderOpenOutline" Width="18" Height="18" />
+                        </Button>
+                      </StackPanel>
+                      <ToggleSwitch Grid.Column="3" IsChecked="{Binding Enabled}" IsEnabled="{Binding CanToggle}"
+                                    ToolTip.Tip="{Binding ToggleHint}" VerticalAlignment="Center" />
+                    </Grid>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </TabItem>
+
+        <TabItem Header="Uygulama İzinleri">
+          <StackPanel Spacing="12">
+            <Border Classes="card" Background="{StaticResource NovaWarningSoft}" BorderBrush="#40F5A524" IsVisible="{Binding HasPermissionNote}">
+              <Grid ColumnDefinitions="Auto,*,Auto">
+                <mi:MaterialIcon Kind="LockAlertOutline" Width="24" Height="24" Foreground="{StaticResource NovaWarningText}" VerticalAlignment="Top" />
+                <TextBlock Grid.Column="1" Margin="14,0" Classes="sub" Text="{Binding PermissionNote}" />
+                <Button Grid.Column="2" Classes="small" Content="Tam Disk Erişimi" IsVisible="{Binding IsMac}" Command="{Binding OpenFullDiskAccessCommand}" VerticalAlignment="Center" />
+              </Grid>
+            </Border>
+
+            <ItemsControl ItemsSource="{Binding Permissions}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:PermissionGroupViewModel">
+                  <Border Classes="card" Padding="0" Margin="0,0,0,12" CornerRadius="20">
+                    <StackPanel>
+                      <Button AutomationProperties.Name="Ayrıntıları aç veya kapat" Classes="cardbutton" Background="Transparent" BorderThickness="0" Padding="18" CornerRadius="20" Command="{Binding ToggleCommand}">
+                        <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto">
+                          <Border Classes="tile" ui:Tone.Class="{Binding Tone}"><mi:MaterialIcon Kind="{Binding Icon}" /></Border>
+                          <StackPanel Grid.Column="1" Margin="16,0" VerticalAlignment="Center">
+                            <TextBlock Classes="h3" Text="{Binding Title}" />
+                            <TextBlock Classes="caption" Text="{Binding CountText}" />
+                          </StackPanel>
+                          <Border Grid.Column="2" Classes="pill danger" Margin="0,0,10,0" IsVisible="{Binding InUse}"><TextBlock Text="Şu an kullanımda" /></Border>
+                          <Border Grid.Column="3" Classes="pill" ui:Tone.Class="{Binding GlobalTone}" Margin="0,0,10,0" IsVisible="{Binding HasGlobal}"><TextBlock Text="{Binding GlobalText}" /></Border>
+                          <Button Grid.Column="4" Classes="small" Content="Ayarlarda aç" Command="{Binding OpenSettingsCommand}" />
+                        </Grid>
+                      </Button>
+                      <StackPanel Margin="18,0,18,16" IsVisible="{Binding IsExpanded}">
+                        <TextBlock Classes="caption muted" Text="Bu izni isteyen uygulama yok." IsVisible="{Binding !HasApps}" Margin="66,0,0,0" />
+                        <ItemsControl ItemsSource="{Binding Apps}">
+                          <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:PermissionAppViewModel">
+                              <Border Classes="row" Margin="0,0,0,8" Padding="14,10">
+                                <Grid ColumnDefinitions="*,Auto,Auto,Auto">
+                                  <StackPanel>
+                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                                    <TextBlock Classes="path" Text="{Binding Path}" IsVisible="{Binding HasPath}" MaxWidth="640" HorizontalAlignment="Left" />
+                                  </StackPanel>
+                                  <TextBlock Grid.Column="1" Classes="caption" Text="{Binding LastUsedText}" VerticalAlignment="Center" Margin="12,0" />
+                                  <Border Grid.Column="2" Classes="pill danger" Margin="0,0,8,0" IsVisible="{Binding InUse}"><TextBlock Text="Kullanıyor" /></Border>
+                                  <Border Grid.Column="3" Classes="pill" ui:Tone.Class="{Binding AllowedTone}"><TextBlock Text="{Binding AllowedText}" /></Border>
+                                </Grid>
+                              </Border>
+                            </DataTemplate>
+                          </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                      </StackPanel>
+                    </StackPanel>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </TabItem>
+      </TabControl>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>
